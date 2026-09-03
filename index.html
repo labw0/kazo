@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كازو | KAZO - منصة المراهنات والألعاب الرائدة</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kazo: {
+                            dark: '#080d16',
+                            card: '#0f172a',
+                            border: '#1e293b',
+                            cyan: '#00e5ff',
+                            gold: '#ffc107',
+                            emerald: '#10b981',
+                            red: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-locked bg-[#070c16] text-gray-100 min-h-screen flex flex-col antialiased">
+
+    <!-- KAZO Authentication Gate -->
+    <div id="auth-gate" class="fixed inset-0 z-[100] bg-[#050914] flex items-center justify-center p-4 overflow-y-auto">
+        <div class="w-full max-w-md my-6">
+            <div class="text-center mb-5">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-3xl text-slate-950 shadow-xl shadow-cyan-500/20">K</div>
+                <h1 class="mt-3 text-3xl font-black tracking-widest text-white">KAZO</h1>
+                <p class="text-xs text-slate-400 mt-1">سجّل دخولك للمتابعة إلى حسابك</p>
+            </div>
+
+            <div class="bg-slate-900/95 border border-slate-700 rounded-3xl p-5 sm:p-6 shadow-2xl">
+                <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 bg-slate-950 rounded-xl mb-5">
+                    <button type="button" data-auth-tab="login" class="bg-cyan-500 text-slate-950 rounded-lg py-2.5 text-sm font-black">تسجيل الدخول</button>
+                    <button type="button" data-auth-tab="signup" class="bg-slate-800 text-slate-300 rounded-lg py-2.5 text-sm font-black">إنشاء حساب</button>
+                </div>
+
+                <div id="auth-login-panel">
+                    <form id="login-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">الإيميل أو ID</label>
+                            <input id="login-identifier" autocomplete="username" class="auth-input" placeholder="example@email.com أو 1000" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور</label>
+                            <input id="login-password" type="password" autocomplete="current-password" class="auth-input" placeholder="••••••••" required>
+                        </div>
+                        <button id="login-submit" class="auth-primary-btn" type="submit">تسجيل الدخول</button>
+                        <button id="forgot-link" type="button" class="w-full text-center text-xs text-cyan-400 hover:text-cyan-300">نسيت كلمة السر؟</button>
+                    </form>
+                </div>
+
+                <div id="auth-signup-panel" class="hidden">
+                    <form id="signup-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">الاسم</label>
+                            <input id="signup-name" maxlength="50" class="auth-input" placeholder="اسم الحساب" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">الإيميل</label>
+                            <input id="signup-email" type="email" autocomplete="email" class="auth-input" placeholder="example@email.com" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور</label>
+                            <input id="signup-password" type="password" minlength="8" autocomplete="new-password" class="auth-input" placeholder="8 أحرف على الأقل" required>
+                        </div>
+                        <button id="signup-send-code" type="button" class="w-full rounded-xl border border-cyan-500/50 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 py-3 text-sm font-black transition">إرسال رمز التحقق إلى البريد</button>
+                        <div id="signup-code-wrap" class="hidden">
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">رقم التحقق</label>
+                            <input id="signup-code" inputmode="numeric" maxlength="6" class="auth-input text-center tracking-[0.45em] font-mono text-lg" placeholder="000000">
+                        </div>
+                        <button id="signup-create" class="auth-primary-btn hidden" type="submit">إنشاء الحساب</button>
+                    </form>
+                </div>
+
+                <div id="auth-forgot-panel" class="hidden">
+                    <form id="forgot-form" class="space-y-4">
+                        <div class="text-center mb-2">
+                            <h2 class="font-black text-white text-lg">استعادة كلمة المرور</h2>
+                            <p class="text-xs text-slate-400 mt-1">أدخل بريد الحساب وسنرسل لك رابط الاستعادة.</p>
+                        </div>
+                        <input id="forgot-email" type="email" class="auth-input" placeholder="example@email.com" required>
+                        <button id="forgot-submit" class="auth-primary-btn" type="submit">إرسال رابط الاستعادة</button>
+                        <button id="forgot-back" type="button" class="w-full text-xs text-slate-400 hover:text-white">العودة إلى تسجيل الدخول</button>
+                    </form>
+                </div>
+
+                <div id="auth-recovery-panel" class="hidden">
+                    <form id="recovery-form" class="space-y-4">
+                        <div class="text-center mb-2">
+                            <h2 class="font-black text-white text-lg">كلمة مرور جديدة</h2>
+                        </div>
+                        <input id="recovery-password" type="password" minlength="8" class="auth-input" placeholder="كلمة المرور الجديدة" required>
+                        <input id="recovery-password-confirm" type="password" minlength="8" class="auth-input" placeholder="تأكيد كلمة المرور" required>
+                        <button id="recovery-submit" class="auth-primary-btn" type="submit">حفظ كلمة المرور</button>
+                    </form>
+                </div>
+
+                <div id="auth-message" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. شريط التنقل العلوي (Header بأسلوب 1xBet) -->
+    <header class="sticky top-0 z-40 bg-[#0d1527]/95 backdrop-blur-md border-b border-slate-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <!-- الشعار -->
+            <div class="flex items-center gap-3">
+                <a href="#" class="flex items-center gap-2.5 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-xl text-slate-950 shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition">
+                        K
+                    </div>
+                    <div>
+                        <div class="text-2xl font-black tracking-wider text-white flex items-center gap-1">
+                            <span>KAZO</span>
+                            <span class="text-cyan-400 text-sm font-bold bg-cyan-950 px-1.5 py-0.5 rounded border border-cyan-800/50">كازو</span>
+                        </div>
+                        <div class="text-[10px] text-gray-400 font-semibold tracking-wide">CASINO & BETTING</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- محفظة الرصيد والأزرار السريعة -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                
+                <!-- عرض الرصيد الافتراضي -->
+                <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-2xl p-1.5 pr-3 shadow-inner">
+                    <div class="flex flex-col text-right ml-2 sm:ml-3">
+                        <span class="text-[10px] text-slate-400 font-medium">الرصيد الافتراضي</span>
+                        <span class="wallet-balance-display font-mono font-black text-sm sm:text-base text-emerald-400">1,000.00 $</span>
+                    </div>
+                    <!-- زر شحن الرصيد التجريبي -->
+                    <button id="open-deposit-modal" title="شحن رصيد إضافي مجاناً" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs px-3 py-2 rounded-xl flex items-center gap-1 shadow-md shadow-emerald-500/20 transition transform active:scale-95">
+                        <span class="text-sm">+</span>
+                        <span class="hidden sm:inline">إيداع مجاني</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-2">
+                    <div class="text-right leading-tight">
+                        <div id="header-user-name" class="text-xs font-bold text-white">مستخدم</div>
+                        <div id="header-user-id" class="text-[10px] font-mono text-cyan-400">ID ...</div>
+                    </div>
+                    <button id="kazo-logout" title="تسجيل الخروج" class="text-xs text-red-300 hover:text-red-200">خروج</button>
+                </div>
+
+                <!-- زر المؤثرات الصوتية -->
+                <button id="sound-toggle-btn" title="تبديل الصوت" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-lg transition">
+                    <span id="sound-toggle-icon">🔊</span>
+                </button>
+
+                <!-- زر سجل الرهانات -->
+                <button id="open-history-modal" title="سجل الرهانات" class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-gray-300 transition">
+                    <span>📋</span>
+                    <span>السجل</span>
+                </button>
+
+                <!-- شارة المستخدم VIP -->
+                <button id="open-vip-modal" class="flex items-center gap-2 p-1.5 bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 rounded-xl transition">
+                    <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold font-mono">
+                        👑
+                    </div>
+                    <span class="hidden md:inline text-xs font-bold text-amber-300">VIP كازو</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- شريط التبويبات الرئيسي (الأقسام) -->
+        <div class="bg-[#0a0f1d] border-t border-slate-800/80 px-4 sm:px-6">
+            <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto py-2 scrollbar-none">
+                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20 transition whitespace-nowrap" data-tab="crash">
+                    <span class="text-base">🛩️</span>
+                    <span>لعبة الطيارة (Crash)</span>
+                </button>
+
+                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-gray-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap" data-tab="apple">
+                    <span class="text-base">🍏</span>
+                    <span>لعبة التفاحة (Apple of Fortune)</span>
+                </button>
+
+                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-gray-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap" data-tab="sports">
+                    <span class="text-base">⚽</span>
+                    <span>المراهنات الرياضية (مباشر)</span>
+                </button>
+
+                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-gray-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap" data-tab="casino">
+                    <span class="text-base">🎰</span>
+                    <span>ألعاب كازو السريعة</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- بانر إعلاني تشويقي بأسلوب 1xBet -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-4 sm:p-6 mb-6 border border-cyan-500/20 shadow-2xl">
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-center md:text-right">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold border border-cyan-500/40 mb-2">
+                        <span>🔥 عروض وألعاب كازو الحصرية</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-white">
+                        مرحباً بك في عالم <span class="text-cyan-400">KAZO</span> للألعاب والمراهنات!
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                        استمتع بتجربة ألعاب حماسية بمحاكاة كاملة 100%: حلّق مع الطيارة أو اصعد سلم تفاحة الحظ حتى 349x!
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="text-center bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-700">
+                        <div class="text-[10px] text-gray-400">أعلى مضاعف طيارة اليوم</div>
+                        <div class="text-lg font-black text-amber-400 font-mono">188.42x 🚀</div>
+                    </div>
+                    <div class="text-center bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-700">
+                        <div class="text-[10px] text-gray-400">جاكبوت التفاحة</div>
+                        <div class="text-lg font-black text-emerald-400 font-mono">349.00x 🍏</div>
+                    </div>
+                </div>
+            </div>
+            <!-- خلفية زخرفية -->
+            <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-10 -top-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- قسم 1: لعبة الطيارة (KAZO Crash / Aviator) -->
+        <!-- ============================================== -->
+        <section id="section-crash" class="space-y-6">
+            
+            <!-- شريط تاريخ المضاعفات السابقة -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center gap-3 overflow-hidden shadow-md">
+                <span class="text-xs font-bold text-gray-400 whitespace-nowrap flex items-center gap-1">
+                    <span>🕒</span>
+                    <span>السابق:</span>
+                </span>
+                <div id="crash-history-pills" class="flex items-center gap-2 overflow-x-auto scrollbar-none py-1">
+                    <!-- تتولد تلقائياً عبر JS -->
+                </div>
+            </div>
+
+            <!-- اللعبة ولوحة التحكم في شبكة تفاعلية -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- لوحة الطيران التفاعلية (Canvas) -->
+                <div class="lg:col-span-8 flex flex-col">
+                    <div id="crash-game-box" class="relative w-full h-[360px] sm:h-[420px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex flex-col justify-between">
+                        
+                        <!-- Canvas للرسوم والمسار والنجوم والانفجار -->
+                        <canvas id="crash-canvas" class="absolute inset-0 w-full h-full"></canvas>
+
+                        <!-- العداد الرقمي الضخم في المنتصف -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+                            <div id="crash-multiplier-val" class="text-6xl md:text-8xl font-black text-white font-mono tracking-wider transition-transform">
+                                1.00x
+                            </div>
+                            <div id="crash-flight-status" class="text-sm font-semibold text-slate-300 mt-2 bg-slate-900/70 px-4 py-1 rounded-full border border-slate-800 backdrop-blur-sm">
+                                في انتظار إقلاع الطائرة...
+                            </div>
+                        </div>
+
+                        <!-- شريط العد التنازلي للجولة القادمة -->
+                        <div id="crash-countdown" class="absolute top-4 left-4 right-4 z-20 flex flex-col items-center">
+                            <div class="w-full bg-slate-900/90 border border-slate-700/80 rounded-full h-4 overflow-hidden shadow-lg p-0.5">
+                                <div id="crash-countdown-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full transition-all duration-100" style="width: 100%;"></div>
+                            </div>
+                            <span id="crash-countdown-text" class="text-xs font-bold text-cyan-300 mt-1.5 font-mono">تبدأ الطائرة في: 5.0 ث</span>
+                        </div>
+
+                        <!-- الشعار الصغير داخل اللعبة -->
+                        <div class="absolute bottom-3 left-4 z-10 pointer-events-none text-slate-600 font-black text-sm tracking-widest font-mono">
+                            KAZO CRASH 🛩️
+                        </div>
+                    </div>
+                </div>
+
+                <!-- لوحة وضع الرهان وسحب الأرباح -->
+                <div class="lg:col-span-4 flex flex-col gap-4">
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                                <span class="font-bold text-white text-base flex items-center gap-2">
+                                    <span>🎯</span>
+                                    <span>لوحة الرهان</span>
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono">رصيدك: <span class="wallet-balance-display text-emerald-400 font-bold">1,000.00 $</span></span>
+                            </div>
+
+                            <!-- تحديد قيمة الرهان -->
+                            <div class="mb-4">
+                                <label class="block text-xs font-bold text-slate-400 mb-1.5">مبلغ الرهان ($)</label>
+                                <div class="relative">
+                                    <input type="number" id="crash-bet-amount" value="10" min="1" step="1" class="w-full bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-4 py-3 text-lg font-mono font-bold text-white focus:outline-none transition">
+                                    <span class="absolute left-3 top-3.5 text-gray-500 font-mono font-bold">$</span>
+                                </div>
+
+                                <!-- أزرار سريعة للمبالغ -->
+                                <div class="grid grid-cols-6 gap-1.5 mt-2">
+                                    <button class="crash-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="+10">+10</button>
+                                    <button class="crash-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="+50">+50</button>
+                                    <button class="crash-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="+100">+100</button>
+                                    <button class="crash-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="2x">2x</button>
+                                    <button class="crash-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="half">½</button>
+                                    <button class="crash-chip-btn bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="max">MAX</button>
+                                </div>
+                            </div>
+
+                            <!-- السحب التلقائي (Auto Cashout) -->
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-xs font-bold text-slate-400">سحب تلقائي عند مضاعف (اختياري)</label>
+                                    <span class="text-[10px] text-cyan-400 font-mono">Auto Cashout</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" id="crash-auto-cashout" placeholder="مثلاً: 2.00" min="1.01" step="0.1" class="w-full bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-4 py-2.5 text-sm font-mono font-bold text-white focus:outline-none transition">
+                                    <span class="absolute left-3 top-2.5 text-gray-500 font-mono">x</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الأزرار الرئيسية للرهان أو السحب -->
+                        <div class="mt-4">
+                            <!-- زر الرهان -->
+                            <button id="crash-bet-btn" class="w-full py-4 rounded-xl font-bold bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white shadow-lg shadow-green-900/30 transition transform active:scale-95 text-base">
+                                <span id="crash-bet-btn-text">راهن الآن (الجولة الحالية)</span>
+                            </button>
+
+                            <!-- زر سحب الأرباح التفاعلي الحي -->
+                            <button id="crash-cashout-btn" class="hidden w-full py-4 rounded-xl font-black bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 shadow-xl shadow-amber-500/40 transition transform active:scale-95 cashout-glow flex flex-col items-center justify-center">
+                                <span class="text-lg">سحب الأرباح الآن! 💰</span>
+                                <span class="text-xs font-mono font-black mt-0.5">مبلغ السحب: <span id="crash-cashout-gain" class="text-base text-black">0.00 $</span></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- إرشادات الأمان والعدالة -->
+                    <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3 text-[11px] text-gray-400 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <span class="text-emerald-400">🛡️</span>
+                            <span>نظام إثبات العدالة (Provably Fair)</span>
+                        </span>
+                        <span class="text-cyan-400 font-mono font-semibold">100% عشوائي</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول اللاعبين المتزامنين (محاكاة حية للاعبين كما في 1xBet) -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                    <span class="text-sm font-bold text-white flex items-center gap-2">
+                        <span>👥</span>
+                        <span>الرهانات الحية في هذه الجولة</span>
+                    </span>
+                    <span id="crash-players-count" class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-full border border-cyan-800/50">
+                        10 لاعبين
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right">
+                        <thead>
+                            <tr class="text-xs text-gray-400 border-b border-slate-800">
+                                <th class="py-2 px-3">اللاعب</th>
+                                <th class="py-2 px-3">مبلغ الرهان</th>
+                                <th class="py-2 px-3 text-center">المضاعف</th>
+                                <th class="py-2 px-3 text-left">الربح</th>
+                            </tr>
+                        </thead>
+                        <tbody id="crash-players-tbody">
+                            <!-- تتولد محاكاة اللاعبين هنا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- قسم 2: لعبة التفاحة (Apple of Fortune) -->
+        <!-- ============================================== -->
+        <section id="section-apple" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- لوحة برج التفاح (10 مستويات) -->
+                <div class="lg:col-span-8 flex flex-col" id="apple-game-card">
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl">
+                        
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                            <div>
+                                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                                    <span>🍏</span>
+                                    <span>كازو تفاحة الحظ (Apple of Fortune)</span>
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-0.5">
+                                    اختر تفاحة واحدة في كل طابق. تجنب التفاح الفاسد 🍏💀 واصعد للأعلى لمضاعفة أرباحك!
+                                </p>
+                            </div>
+
+                            <!-- عرض الربح الحالي المتراكم -->
+                            <div id="apple-win-container" class="hidden text-center bg-emerald-950/60 border border-emerald-500/50 px-4 py-2 rounded-xl">
+                                <div class="text-[10px] text-emerald-300 font-medium">الربح الحالي المتاح للسحب</div>
+                                <div id="apple-current-win" class="text-lg sm:text-xl font-black text-emerald-400 font-mono">0.00 $</div>
+                            </div>
+                        </div>
+
+                        <!-- حاوية شبكة الـ 10 طوابق -->
+                        <div id="apple-grid-container" class="space-y-2">
+                            <!-- تتولد الـ 10 طوابق هنا عبر JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- لوحة التحكم بالرهان الخاص بالتفاحة -->
+                <div class="lg:col-span-4 flex flex-col gap-4">
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+                        <div>
+                            <div class="border-b border-slate-800 pb-3 mb-4 flex items-center justify-between">
+                                <span class="font-bold text-white text-base flex items-center gap-2">
+                                    <span>🍏</span>
+                                    <span>رهان تفاحة الحظ</span>
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono">رصيدك: <span class="wallet-balance-display text-emerald-400 font-bold">1,000.00 $</span></span>
+                            </div>
+
+                            <!-- إدخال الرهان -->
+                            <div class="mb-4">
+                                <label class="block text-xs font-bold text-slate-400 mb-1.5">مبلغ الرهان ($)</label>
+                                <div class="relative">
+                                    <input type="number" id="apple-bet-amount" value="10" min="1" step="1" class="w-full bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-4 py-3 text-lg font-mono font-bold text-white focus:outline-none transition">
+                                    <span class="absolute left-3 top-3.5 text-gray-500 font-mono font-bold">$</span>
+                                </div>
+
+                                <!-- مبالغ سريعة -->
+                                <div class="grid grid-cols-6 gap-1.5 mt-2">
+                                    <button class="apple-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="+10">+10</button>
+                                    <button class="apple-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="+50">+50</button>
+                                    <button class="apple-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="+100">+100</button>
+                                    <button class="apple-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="2x">2x</button>
+                                    <button class="apple-chip-btn bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="half">½</button>
+                                    <button class="apple-chip-btn bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-lg py-1.5 text-xs font-bold font-mono transition" data-action="max">MAX</button>
+                                </div>
+                            </div>
+
+                            <!-- شرح نسب التفاح حسب المستوى -->
+                            <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3 text-xs space-y-1.5 mb-4">
+                                <div class="font-bold text-cyan-400 text-xs mb-1">دليل صعوبة الطوابق:</div>
+                                <div class="flex justify-between text-gray-300">
+                                    <span>المستويات 1 - 4:</span>
+                                    <span class="text-emerald-400 font-mono">4 سليمة / 1 فاسدة</span>
+                                </div>
+                                <div class="flex justify-between text-gray-300">
+                                    <span>المستويات 5 - 7:</span>
+                                    <span class="text-yellow-400 font-mono">3 سليمة / 2 فاسدة</span>
+                                </div>
+                                <div class="flex justify-between text-gray-300">
+                                    <span>المستويات 8 - 9:</span>
+                                    <span class="text-amber-400 font-mono">2 سليمة / 3 فاسدة</span>
+                                </div>
+                                <div class="flex justify-between text-gray-300 font-bold">
+                                    <span class="text-red-400">المستوى الأخير 10:</span>
+                                    <span class="text-red-400 font-mono">1 سليمة / 4 فاسدة (349x!)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- أزرار البدء والسحب -->
+                        <div class="space-y-2 mt-4">
+                            <!-- زر البدء -->
+                            <button id="apple-start-btn" class="w-full py-4 rounded-xl font-bold bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white shadow-lg shadow-green-900/30 transition transform active:scale-95 text-base">
+                                بدء اللعبة الآن 🍏
+                            </button>
+
+                            <!-- زر سحب الأرباح في أي وقت -->
+                            <button id="apple-cashout-btn" class="hidden w-full py-4 rounded-xl font-black bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 shadow-xl shadow-amber-500/40 transition transform active:scale-95 text-base">
+                                <span>سحب الأرباح الآن 💰</span>
+                                <span class="block text-xs font-mono font-bold mt-0.5" id="apple-cashout-win-val">0.00 $</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- قسم 3: المراهنات الرياضية (1xBet Sportsbook Live) -->
+        <!-- ============================================== -->
+        <section id="section-sports" class="hidden space-y-6">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                    <div>
+                        <h3 class="text-xl font-black text-white flex items-center gap-2">
+                            <span>⚽</span>
+                            <span>المراهنات الرياضية المباشرة (Kazo Sports)</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            مباريات كرة القدم الحية مع احتمالات ومضاعفات فورية بأسلوب 1xBet. انقر على الاحتمال لتثبيت الرهان!
+                        </p>
+                    </div>
+                    <span class="px-3 py-1 bg-red-950 text-red-400 border border-red-800 rounded-full text-xs font-bold animate-pulse">
+                        ● مباريات جارية الآن
+                    </span>
+                </div>
+
+                <div id="sports-matches-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- تتولد المباريات هنا عبر JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- قسم 4: ألعاب كازو السريعة (Casino Showcase) -->
+        <!-- ============================================== -->
+        <section id="section-casino" class="hidden space-y-6">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl text-center">
+                <h3 class="text-2xl font-black text-white mb-2">🎰 كازينو كازو | KAZO CASINO</h3>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto mb-8">
+                    مجموعة من أشهر ألعاب الكازينو والألعاب السريعة المحبوبة، قادمة ومتاحة للتجربة!
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    
+                    <!-- لعبة الروليت -->
+                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('لعبة الروليت الكلاسيكية قادمة في التحديث القادم!', 'info')">
+                        <div class="text-5xl mb-3 group-hover:scale-110 transition">🎡</div>
+                        <h4 class="font-bold text-white text-base">الروليت الملكي</h4>
+                        <span class="text-xs text-cyan-400 font-mono mt-1 inline-block">Roulette VIP</span>
+                    </div>
+
+                    <!-- لعبة الألغام Mines -->
+                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('لعبة الألغام Mines قادمة قريباً!', 'info')">
+                        <div class="text-5xl mb-3 group-hover:scale-110 transition">💣</div>
+                        <h4 class="font-bold text-white text-base">لعبة الألغام</h4>
+                        <span class="text-xs text-amber-400 font-mono mt-1 inline-block">Mines 1xBet</span>
+                    </div>
+
+                    <!-- لعبة عجلة الحظ -->
+                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('عجلة الحظ الدوارة قادمة قريباً!', 'info')">
+                        <div class="text-5xl mb-3 group-hover:scale-110 transition">🎯</div>
+                        <h4 class="font-bold text-white text-base">عجلة الحظ</h4>
+                        <span class="text-xs text-emerald-400 font-mono mt-1 inline-block">Wheel of Fortune</span>
+                    </div>
+
+                    <!-- لعبة النرد Dice -->
+                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('لعبة النرد والمضاعف قادمة قريباً!', 'info')">
+                        <div class="text-5xl mb-3 group-hover:scale-110 transition">🎲</div>
+                        <h4 class="font-bold text-white text-base">النرد الكلاسيكي</h4>
+                        <span class="text-xs text-purple-400 font-mono mt-1 inline-block">Classic Dice</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- الفوتر -->
+    <footer class="bg-[#0a0f1d] border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-black text-cyan-400">KAZO</span>
+                <span>© 2026 - منصة كازو للمراهنات والألعاب (محاكاة برصيد تجريبي افتراضي)</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400">
+                <span>18+ للبالغين فقط</span>
+                <span>•</span>
+                <span>لعب مسؤول</span>
+                <span>•</span>
+                <span>إثبات العدالة</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================== -->
+    <!-- النوافذ المنبثقة (Modals) -->
+    <!-- ============================================== -->
+
+    <!-- 1. نافذة الإيداع وشحن الرصيد المجاني -->
+    <div id="deposit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button id="close-deposit-modal" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">✕</button>
+            
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
+                    💵
+                </div>
+                <h3 class="text-xl font-black text-white">إيداع رصيد تجريبي مجاني</h3>
+                <p class="text-xs text-slate-400 mt-1">اختر الباقة التجريبية التي ترغب في إضافتها لمحفظتك فوراً</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <button class="quick-deposit-btn bg-slate-800 hover:bg-emerald-600 hover:text-white p-3 rounded-xl border border-slate-700 font-bold font-mono text-center transition" data-amount="100">
+                    <span class="block text-emerald-400 text-lg font-black">+100 $</span>
+                    <span class="text-[10px] text-gray-400">مبتدئ</span>
+                </button>
+                <button class="quick-deposit-btn bg-slate-800 hover:bg-emerald-600 hover:text-white p-3 rounded-xl border border-slate-700 font-bold font-mono text-center transition" data-amount="500">
+                    <span class="block text-emerald-400 text-lg font-black">+500 $</span>
+                    <span class="text-[10px] text-gray-400">متوسط</span>
+                </button>
+                <button class="quick-deposit-btn bg-slate-800 hover:bg-emerald-600 hover:text-white p-3 rounded-xl border border-slate-700 font-bold font-mono text-center transition" data-amount="1000">
+                    <span class="block text-emerald-400 text-lg font-black">+1,000 $</span>
+                    <span class="text-[10px] text-amber-400">VIP</span>
+                </button>
+            </div>
+
+            <div class="text-center text-xs text-gray-500">
+                * هذا رصيد تدريبي افتراضي للترفيه والمحاكاة الكاملة.
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. نافذة سجل الرهانات -->
+    <div id="history-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+            <button id="close-history-modal" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">✕</button>
+
+            <div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-3">
+                <span class="text-2xl">📋</span>
+                <h3 class="text-xl font-black text-white">سجل الرهانات والأرباح</h3>
+            </div>
+
+            <div class="flex-1 overflow-y-auto">
+                <table class="w-full text-right">
+                    <thead>
+                        <tr class="text-xs text-gray-400 border-b border-slate-800">
+                            <th class="py-2.5 px-3">اللعبة</th>
+                            <th class="py-2.5 px-3">الرهان</th>
+                            <th class="py-2.5 px-3">الربح</th>
+                            <th class="py-2.5 px-3">النتيجة</th>
+                            <th class="py-2.5 px-3">الوقت</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <!-- تتولد القائمة عبر JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. نافذة VIP -->
+    <div id="vip-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-center">
+            <button id="close-vip-modal" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">✕</button>
+            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
+                👑
+            </div>
+            <h3 class="text-2xl font-black text-amber-400 mb-1">نادي كازو VIP الذهبي</h3>
+            <p class="text-xs text-slate-400 mb-4">أنت الآن عضو برتبة مميزة في كازو مع مضاعفات حصرية واسترداد كاش باك 10%!</p>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-right space-y-2 text-xs text-gray-300">
+                <div class="flex items-center gap-2"><span>✨</span><span>سحب أرباح فوري بدون انتظار</span></div>
+                <div class="flex items-center gap-2"><span>✨</span><span>دعم فني خاص على مدار الساعة</span></div>
+                <div class="flex items-center gap-2"><span>✨</span><span>بونص إيداع أسبوعي بنسبة 200%</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- استدعاء ملفات السكربت بترتيب سليم -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="sound-engine.js"></script>
+    <script src="crash-game.js"></script>
+    <script src="apple-game.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

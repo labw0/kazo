@@ -1,0 +1,145 @@
+/* KAZO Stylesheet (تنسيقات كازو للمراهنات والألعاب) */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+:root {
+    --bg-main: #0a0f19;
+    --bg-card: #111a2e;
+    --bg-card-hover: #17243e;
+    --accent-cyan: #00e5ff;
+    --accent-gold: #ffc107;
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--bg-main);
+    color: #e2e8f0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* التمرير المخصص */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #090e18;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #00e5ff;
+}
+
+/* اهتزاز الشاشة عند الانفجار */
+@keyframes shake {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 4px); }
+    40% { transform: translate(4px, -3px); }
+    60% { transform: translate(-3px, -4px); }
+    80% { transform: translate(3px, 2px); }
+}
+
+.shake-anim {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* نبض سريع للمضاعف النامي */
+@keyframes pulseFast {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.92; transform: scale(1.02); }
+}
+
+.animate-pulse-fast {
+    animation: pulseFast 0.35s ease-in-out infinite;
+}
+
+/* توهج صف التفاحة النشط */
+.active-apple-row {
+    animation: activeRowGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes activeRowGlow {
+    from {
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+    to {
+        box-shadow: 0 0 22px rgba(0, 229, 255, 0.5);
+    }
+}
+
+/* زر السحب المتوهج */
+.cashout-glow {
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.5);
+    animation: pulseCashout 1.2s infinite;
+}
+
+@keyframes pulseCashout {
+    0% { box-shadow: 0 0 15px rgba(255, 193, 7, 0.4); }
+    50% { box-shadow: 0 0 30px rgba(255, 193, 7, 0.8); }
+    100% { box-shadow: 0 0 15px rgba(255, 193, 7, 0.4); }
+}
+
+/* تأثير قلب البطاقات في لعبة التفاحة */
+.apple-cell {
+    perspective: 1000px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apple-cell:hover:not(.pointer-events-none) {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 20px rgba(0, 229, 255, 0.25);
+}
+
+/* Canvas التفاعلي */
+#crash-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+}
+
+/* KAZO authentication */
+body.auth-locked > header,
+body.auth-locked > main,
+body.auth-locked > footer {
+    display: none !important;
+}
+
+.auth-input {
+    width: 100%;
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 0.75rem;
+    padding: 0.8rem 0.9rem;
+    color: #f8fafc;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.auth-input:focus {
+    border-color: #06b6d4;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, .12);
+}
+.auth-primary-btn {
+    width: 100%;
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
+    font-weight: 900;
+    font-size: .9rem;
+    color: #06121b;
+    background: linear-gradient(90deg, #22d3ee, #3b82f6);
+    transition: transform .15s, filter .15s;
+}
+.auth-primary-btn:hover { filter: brightness(1.08); }
+.auth-primary-btn:active { transform: scale(.99); }
