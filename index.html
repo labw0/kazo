@@ -1,14 +1,127 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Uncrossable Rush 3D</title><style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020612;font-family:Arial,sans-serif;color:#fff}.game{height:100dvh;max-width:560px;margin:auto;display:flex;flex-direction:column;background:#061022}.top{height:8.5%;min-height:56px;display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:linear-gradient(180deg,#071a39,#061126);border-bottom:1px solid #18335d;z-index:5}.brand{font-weight:1000;font-size:clamp(20px,6vw,31px);direction:ltr;text-shadow:0 2px 12px #000}.brand i{font-style:normal;color:#ffc43d}.bal{font-size:11px;color:#a9b8d1;text-align:right}.bal strong{display:block;color:#fff;font-size:17px}.stage{position:relative;flex:1;overflow:hidden;direction:ltr;background:#080e1f}.city{position:absolute;inset:0 auto 0 0;width:20%;background:linear-gradient(90deg,#101426,#17162b 70%,#0d1224);border-right:2px solid #293552;box-shadow:inset -12px 0 28px #0008}.city:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 58px,#25304a 59px 62px,transparent 63px 120px);opacity:.6}.neon{position:absolute;left:8px;top:10%;writing-mode:vertical-rl;color:#ff4af3;font-weight:900;font-size:18px;text-shadow:0 0 8px #ff00ef,0 0 18px #ff00ef}.road{position:absolute;left:20%;right:0;top:0;bottom:0;background:linear-gradient(90deg,#0b1022,#10172a 45%,#090f20);box-shadow:inset 0 0 80px #000}.road:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 20.5%,#717b98 20.7% 21.1%,transparent 21.3% 41.5%);opacity:.72;filter:drop-shadow(0 0 2px #7f8ba5)}.roadshine{position:absolute;left:20%;right:0;inset-block:0;background:linear-gradient(180deg,#16305222,transparent 35%,#39678a13 65%,transparent);pointer-events:none}.mults{position:absolute;left:20%;right:0;top:53%;height:70px;display:flex;align-items:center;justify-content:space-around;z-index:2}.m{width:57px;height:57px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#26375b 0 48%,#17223f 50% 68%,#5d72a8 71% 76%,#111a32 79%);font-weight:900;font-size:15px;text-shadow:0 2px 3px #000;box-shadow:0 0 12px #5b75bb55}.m.active{box-shadow:0 0 18px #18e45a;background:radial-gradient(circle,#163c2a 0 48%,#0a2b1a 50% 66%,#16d94e 70% 78%,#082014 80%)}.car{position:absolute;z-index:3;width:64px;height:112px;border-radius:18px 18px 13px 13px;transform:perspective(240px) rotateX(-7deg);box-shadow:0 15px 22px #000b,0 0 18px var(--glow);background:linear-gradient(90deg,#101522 0 8%,var(--c) 10% 90%,#111827 92%);border:2px solid #182136}.car:before{content:"";position:absolute;left:12px;right:12px;top:18px;height:37px;border-radius:10px 10px 5px 5px;background:linear-gradient(#17384b,#07131e);border:2px solid #314c61;box-shadow:inset 0 5px 10px #6bb9dc22}.car:after{content:"";position:absolute;left:10px;right:10px;bottom:7px;height:7px;background:linear-gradient(90deg,#fff0a8 0 22%,transparent 23% 76%,#fff0a8 77%);filter:drop-shadow(0 0 5px #fff2a6)}.truck{width:72px;height:142px;border-radius:12px}.barrier{position:absolute;z-index:4;width:62px;height:27px;background:repeating-linear-gradient(135deg,#2c3650 0 10px,#78839c 10px 20px);border:2px solid #111a2e;border-radius:3px;box-shadow:0 8px 12px #0008}.chicken{position:absolute;z-index:7;width:118px;height:128px;object-fit:cover;object-position:center;filter:drop-shadow(0 12px 10px #000a);transform-origin:50% 75%;transition:filter .2s}.chicken.hop{animation:hop .46s cubic-bezier(.2,.7,.2,1)}.chicken.flap{animation:flap .18s ease-in-out infinite alternate}@keyframes hop{0%{transform:translateY(0) scale(1)}45%{transform:translateY(-34px) rotate(-4deg) scale(1.06)}100%{transform:translateY(0) scale(1)}}@keyframes flap{from{filter:drop-shadow(0 12px 10px #000a) brightness(1)}to{filter:drop-shadow(0 8px 8px #0008) brightness(1.08)}}.checkpoint{position:absolute;z-index:5;width:78px;height:78px;border-radius:50%;border:7px solid #14c94c;background:#0a7f2d55;box-shadow:0 0 18px #11e34f;display:none}.checkpoint.show{display:block}.betflag{position:absolute;z-index:6;padding:8px 13px;background:#09a83e;border-radius:7px;color:#eaffef;font-weight:900;font-size:11px;display:none}.betflag.show{display:block}.diff{position:absolute;right:5%;bottom:20%;z-index:9;background:#1e2553dd;border-radius:6px;padding:10px 27px;font-weight:900}.back{position:absolute;left:10px;bottom:10px;z-index:10;background:#1d2450;color:#fff;border:0;border-radius:8px;padding:9px 13px;font-size:18px}.toast{position:absolute;left:50%;top:10%;z-index:20;transform:translateX(-50%);padding:10px 18px;border-radius:22px;background:#091833e8;border:1px solid #506ba2;font-weight:900;opacity:0;transition:.2s;white-space:nowrap}.toast.show{opacity:1}.controls{height:21%;min-height:145px;background:linear-gradient(#03050d,#010207);display:grid;grid-template-columns:1fr 1.08fr 1fr;align-items:center;padding:6px 10px 12px;gap:7px;direction:ltr;border-top:1px solid #121b33}.box{text-align:center;font-size:12px;color:#c6cbe0}.box b{display:block;color:#fff;font-size:15px;margin:6px}.round{width:min(19vw,80px);aspect-ratio:1;border:0;border-radius:50%;font-size:32px;color:#fff;box-shadow:0 0 0 8px #0d1530}.bet{background:radial-gradient(circle at 35% 30%,#3c4e91,#1b2856)}.collect{background:radial-gradient(circle at 35% 30%,#e58b12,#7c3600)}.go{width:min(28vw,112px);aspect-ratio:1;border-radius:50%;border:10px solid #075f22;background:radial-gradient(circle at 35% 28%,#29f35b,#06a82f 72%);color:#dfffe6;font-size:43px;font-weight:900;box-shadow:0 0 24px #00e84666}.go:active{transform:scale(.94)}.amount{font-size:12px;color:#fff}@media(max-height:700px){.controls{height:24%;min-height:130px}.chicken{width:100px;height:108px}.mults{top:50%}}
-</style></head><body><div class="game"><header class="top"><div class="brand"><i>⚡</i>KAZO</div><div class="bal">الرصيد التجريبي<strong id="balance">100,000 د.ع</strong></div></header><main class="stage" id="stage"><div class="city"><div class="neon">KAZO • GO!</div></div><div class="road"></div><div class="roadshine"></div><div class="mults" id="mults"></div><div class="checkpoint" id="cp"></div><div class="betflag" id="flag">✓ DEMO 100</div><img class="chicken" id="chicken" src="assets/chicken-3d.png"><div class="diff">EASY⌃</div><div class="toast" id="toast"></div><button class="back" onclick="history.back()">↩</button></main><footer class="controls"><div class="box"><button class="round bet" id="betBtn">⚙</button><b>BETTING</b><span class="amount">BET <span id="bet">100</span></span></div><div class="box"><button class="go" id="go">➜</button><b id="action">GO</b></div><div class="box"><button class="round collect" id="collect">🪙</button><b>COLLECT</b><span class="amount">BALANCE</span></div></footer></div><script>
-const stage=document.getElementById('stage'),ch=document.getElementById('chicken'),go=document.getElementById('go'),toast=document.getElementById('toast'),cp=document.getElementById('cp'),flag=document.getElementById('flag'),multsEl=document.getElementById('mults');const mult=[1.1,1.2,1.35,1.6,1.8,2.2,2.8,3.5,4.5,6,8,12];let step=0,playing=false,jumping=false,balance=100000,bet=100,cars=[],timer=0,ac;for(let i=0;i<4;i++){let d=document.createElement('div');d.className='m';d.textContent='x'+mult[i];multsEl.appendChild(d)}
-function tone(f,d=.08,type='sine',v=.05){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();let o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(ac.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.stop(ac.currentTime+d)}catch(e){}}function crossSound(){tone(480,.06,'square',.025);setTimeout(()=>tone(680,.09,'sine',.04),65)}function crashSound(){tone(90,.3,'sawtooth',.11);setTimeout(()=>tone(55,.3,'square',.06),70)}function show(s){toast.textContent=s;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),900)}
-function geom(){let w=stage.clientWidth,h=stage.clientHeight;return{w,h,left:w*.20,road:w*.80,y:h*.61,dx:w*.80/4.5}}function placeChicken(){let g=geom(),x=g.left+18+Math.min(step,3.2)*g.dx;ch.style.left=(x-48)+'px';ch.style.top=(g.y-70)+'px';cp.style.left=(x-35)+'px';cp.style.top=(g.y-20)+'px';flag.style.left=(x-39)+'px';flag.style.top=(g.y+66)+'px'}addEventListener('resize',placeChicken);placeChicken();
-function spawnCar(){let g=geom(),lane=Math.floor(Math.random()*4),c=document.createElement('div');c.className='car'+(Math.random()<.28?' truck':'');let cols=[['#d93c43','#ff5d64'],['#e0a91b','#ffc629'],['#2574a9','#3ca7e9'],['#e9edf2','#fff']];let col=cols[Math.floor(Math.random()*cols.length)];c.style.setProperty('--c',col[0]);c.style.setProperty('--glow',col[1]+'55');c.style.left=(g.left+lane*g.dx+g.dx*.45-30)+'px';c.style.top='-160px';stage.appendChild(c);cars.push({el:c,y:-160,s:160+Math.random()*110,lane});}
-function updateCars(dt){let g=geom();timer+=dt;if(timer>.75){timer=0;spawnCar()}for(let i=cars.length-1;i>=0;i--){let a=cars[i];a.y+=a.s*dt;a.el.style.top=a.y+'px';if(a.y>g.h+170){a.el.remove();cars.splice(i,1)}}}
-let last=performance.now();function loop(n){let dt=Math.min(.035,(n-last)/1000);last=n;updateCars(dt);requestAnimationFrame(loop)}requestAnimationFrame(loop);for(let i=0;i<4;i++){spawnCar();cars[i].y=i*170-50}
-function collision(next){let g=geom(),targetLane=Math.min(next,3),targetX=g.left+targetLane*g.dx+g.dx*.45;for(let a of cars){let carX=parseFloat(a.el.style.left)+32;if(Math.abs(carX-targetX)<45&&Math.abs(a.y-g.y)<95)return true}return false}
-function start(){if(balance<bet){show('الرصيد غير كافٍ');return}balance-=bet;upd();playing=true;step=0;cp.classList.remove('show');flag.classList.remove('show');document.getElementById('action').textContent='اعبر';tone(300,.08,'sine',.05);hop()}
-function hop(){if(!playing||jumping)return;jumping=true;ch.classList.add('hop','flap');let willCrash=collision(step+1);setTimeout(()=>{ch.classList.remove('hop','flap');if(willCrash){crashSound();ch.style.transform='rotate(75deg) translateY(30px)';show('اصطدام! خسرت الرهان');playing=false;setTimeout(reset,1200)}else{step++;crossSound();cp.classList.add('show');flag.classList.add('show');flag.textContent='✓ DEMO '+Math.floor(bet*mult[Math.min(step-1,mult.length-1)]);document.querySelectorAll('.m').forEach((e,i)=>e.classList.toggle('active',i===Math.min(step-1,3)));dropBarrier();placeChicken();show('عبور ناجح ×'+mult[step-1]);jumping=false;if(step>=mult.length)collectWin()}},460)}
-function dropBarrier(){let g=geom(),b=document.createElement('div');b.className='barrier';b.style.left=(g.left+Math.max(0,step-1)*g.dx+8)+'px';b.style.top=(g.y-105)+'px';stage.appendChild(b);setTimeout(()=>b.remove(),9000)}function reset(){step=0;playing=false;jumping=false;ch.style.transform='';cp.classList.remove('show');flag.classList.remove('show');document.getElementById('action').textContent='GO';placeChicken()}function collectWin(){let win=Math.floor(bet*mult[Math.max(0,step-1)]);balance+=win;upd();playing=false;show('تم التحصيل '+win+' د.ع');tone(880,.18,'sine',.07);setTimeout(reset,800)}go.onclick=()=>playing?hop():start();document.getElementById('collect').onclick=()=>{if(playing&&step>0)collectWin()};document.getElementById('betBtn').onclick=()=>{if(playing)return;bet=bet===100?500:bet===500?1000:100;document.getElementById('bet').textContent=bet};function upd(){document.getElementById('balance').textContent=balance.toLocaleString('ar-IQ')+' د.ع'}upd();
-</script></body></html>
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الدجاجة Uncrossable Rush | iChancy Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="brand-section">
+                <span class="brand-logo">🐔</span>
+                <div>
+                    <h1 class="brand-title" data-i18n="title">لعبة الدجاجة - UNCROSSABLE RUSH</h1>
+                    <p class="brand-subtitle" data-i18n="subtitle">النسخة الأصلية من iChancy و Evoplay</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="balance-card">
+                    <span class="balance-label" data-i18n="balance">الرصيد:</span>
+                    <span class="balance-amount" id="balanceDisplay">$1,000.00</span>
+                    <button class="btn-refill" id="btnRefill" data-i18n="refill">تعبئة</button>
+                </div>
+                <div class="header-tools">
+                    <button class="tool-btn" id="btnToggleMusic" title="الموسيقى">🎵</button>
+                    <button class="tool-btn" id="btnToggleSfx" title="المؤثرات الصوتية">🔊</button>
+                    <button class="tool-btn" id="btnLang" title="اللغة">EN</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- History Bar -->
+        <div class="history-container">
+            <span class="history-label" data-i18n="recentRounds">سجل الجولات الأخيرة:</span>
+            <div class="history-pills" id="historyBar">
+                <!-- History pills dynamically rendered -->
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <main class="main-game-area">
+            <!-- Left Side: Multiplier Ladder -->
+            <aside class="ladder-panel">
+                <div class="ladder-header" data-i18n="multiplierLadder">سلم المضاعفات (24 مسار)</div>
+                <div class="ladder-list" id="multiplierLadderList">
+                    <!-- Multipliers dynamically populated -->
+                </div>
+            </aside>
+
+            <!-- Center: Canvas Viewport -->
+            <div class="canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                <div class="status-banner info" id="statusMessage" data-i18n="waitingBet">
+                    ضع رهانك واضغط GO لبدء العبور
+                </div>
+            </div>
+
+            <!-- Right: Controls & Betting Panel -->
+            <aside class="controls-panel">
+                <!-- Difficulty Selection -->
+                <div>
+                    <div class="panel-section-title" data-i18n="difficulty">مستوى الصعوبة:</div>
+                    <div class="difficulty-grid">
+                        <button class="diff-btn" data-diff="easy" data-i18n="easy">سهل</button>
+                        <button class="diff-btn active" data-diff="medium" data-i18n="medium">متوسط</button>
+                        <button class="diff-btn" data-diff="hard" data-i18n="hard">صعب</button>
+                        <button class="diff-btn" data-diff="hardcore" data-i18n="hardcore">هاردكور ⚡</button>
+                    </div>
+                </div>
+
+                <!-- Bet Amount Control -->
+                <div>
+                    <div class="panel-section-title" data-i18n="bet">قيمة الرهان:</div>
+                    <div class="bet-input-box">
+                        <button class="bet-adjust-btn" id="btnBetMinus">−</button>
+                        <input type="number" class="bet-input" id="betAmountInput" value="10.00" min="1" max="500" step="1">
+                        <button class="bet-adjust-btn" id="btnBetPlus">+</button>
+                    </div>
+                    <!-- Modifiers -->
+                    <div class="modifiers-row">
+                        <button class="modifier-btn" id="btnBetHalf">½</button>
+                        <button class="modifier-btn" id="btnBetDouble">2X</button>
+                        <button class="modifier-btn" id="btnBetMin" data-i18n="min">أدنى</button>
+                        <button class="modifier-btn" id="btnBetMax" data-i18n="max">أقصى</button>
+                    </div>
+                    <!-- Quick Chips -->
+                    <div class="chips-row">
+                        <button class="chip-btn" data-val="5">$5</button>
+                        <button class="chip-btn" data-val="10">$10</button>
+                        <button class="chip-btn" data-val="25">$25</button>
+                        <button class="chip-btn" data-val="50">$50</button>
+                        <button class="chip-btn" data-val="100">$100</button>
+                    </div>
+                </div>
+
+                <!-- Big Action Buttons -->
+                <div class="action-buttons-group">
+                    <button class="btn-go" id="btnGo">
+                        <span data-i18n="startGo">ابدأ الرهان واعبر GO</span>
+                    </button>
+                    <button class="btn-cashout" id="btnCashOut" disabled>
+                        <span data-i18n="cashOut">سحب الأرباح CASH OUT</span>
+                        <span class="cashout-val" id="cashoutValue"></span>
+                    </button>
+                </div>
+
+                <!-- Shortcuts Hints -->
+                <div class="keyboard-hints">
+                    اختصارات لوحة المفاتيح:<br>
+                    اضغط <kbd>Space</kbd> أو <kbd>↑</kbd> للتقدم إلى الأمام<br>
+                    اضغط <kbd>C</kbd> لسحب الأرباح
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Scripts in logical dependency order -->
+    <script src="js/audio.js"></script>
+    <script src="js/chicken.js"></script>
+    <script src="js/barrier.js"></script>
+    <script src="js/cars.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
