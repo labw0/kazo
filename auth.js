@@ -6,6 +6,9 @@
     const $ = (id) => document.getElementById(id);
     let sb = null;
     let pendingSignupEmail = '';
+    // Keep recovery links locked on the password-reset screen.
+    let recoveryMode = new URLSearchParams(location.search).get('type') === 'recovery' ||
+        new URLSearchParams(location.hash.replace(/^#/, '')).get('type') === 'recovery';
 
     const configReady = () => {
         const url = window.KAZO_SUPABASE_URL || '';
@@ -206,9 +209,14 @@
         try {
             const { error } = await sb.auth.updateUser({ password: p1 });
             if (error) throw error;
-            message('تم تغيير كلمة المرور بنجاح.', 'success');
-            const { data } = await sb.auth.getSession();
-            await unlock(data.session);
+            // A recovery link creates a temporary authenticated session. Do not
+            // unlock the app with that session; end it and return to normal login.
+            recoveryMode = false;
+            await sb.auth.signOut();
+            $('recovery-password').value = '';
+            $('recovery-password-confirm').value = '';
+            showPanel('login');
+            message('تم تغيير كلمة المرور بنجاح. سجّل الدخول الآن بكلمة المرور الجديدة.', 'success');
         } catch (err) {
             message(err.message, 'error');
         } finally {
@@ -239,6 +247,7 @@
 
         sb.auth.onAuthStateChange(async (event, session) => {
             if (event === 'PASSWORD_RECOVERY') {
+                recoveryMode = true;
                 $('auth-gate')?.classList.remove('hidden');
                 document.body.classList.add('auth-locked');
                 showPanel('recovery');
@@ -252,8 +261,16 @@
         });
 
         const { data } = await sb.auth.getSession();
-        if (data.session) await unlock(data.session);
-        else showPanel('login');
+        // Never treat the temporary recovery session as a normal login.
+        if (recoveryMode) {
+            $('auth-gate')?.classList.remove('hidden');
+            document.body.classList.add('auth-locked');
+            showPanel('recovery');
+        } else if (data.session) {
+            await unlock(data.session);
+        } else {
+            showPanel('login');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', init);
