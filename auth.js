@@ -187,10 +187,11 @@
         const btn = $('forgot-submit');
         setBusy(btn, true, 'جاري الإرسال...');
         try {
-            const redirectTo = `${location.origin}${location.pathname}`;
+            // نضيف mode=recovery حتى يعرف KAZO أن الرابط خاص بتعيين كلمة مرور جديدة.
+            const redirectTo = `${location.origin}${location.pathname}?mode=recovery`;
             const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
             if (error) throw error;
-            message('إذا كان البريد مسجلاً فستصلك رسالة إعادة تعيين كلمة المرور.', 'success');
+            message('تم إرسال رابط الاستعادة. افتح الرسالة واضغط الرابط، وستظهر لك شاشة إنشاء كلمة مرور جديدة داخل KAZO.', 'success');
         } catch (err) {
             message(err.message, 'error');
         } finally {
@@ -210,6 +211,8 @@
             const { error } = await sb.auth.updateUser({ password: p1 });
             if (error) throw error;
             message('تم تغيير كلمة المرور بنجاح.', 'success');
+            // تنظيف رابط الاستعادة حتى لا تعود شاشة تغيير كلمة المرور عند تحديث الصفحة.
+            history.replaceState({}, document.title, `${location.origin}${location.pathname}`);
             const { data } = await sb.auth.getSession();
             await unlock(data.session);
         } catch (err) {
@@ -240,8 +243,12 @@
         $('forgot-back')?.addEventListener('click', () => showPanel('login'));
         $('kazo-logout')?.addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
 
+        const url = new URL(location.href);
+        const hashParams = new URLSearchParams(location.hash.replace(/^#/, ''));
+        const recoveryMode = url.searchParams.get('mode') === 'recovery' || hashParams.get('type') === 'recovery';
+
         sb.auth.onAuthStateChange(async (event, session) => {
-            if (event === 'PASSWORD_RECOVERY') {
+            if (event === 'PASSWORD_RECOVERY' || recoveryMode) {
                 $('auth-gate')?.classList.remove('hidden');
                 document.body.classList.add('auth-locked');
                 showPanel('recovery');
@@ -254,9 +261,31 @@
             }
         });
 
-        const { data } = await sb.auth.getSession();
-        if (data.session) await unlock(data.session);
-        else showPanel('login');
+        let { data } = await sb.auth.getSession();
+
+        // بعض روابط Supabase تستخدم ?code=... (PKCE). إذا لم تُنشأ الجلسة تلقائياً، ننشئها هنا.
+        if (recoveryMode && !data.session) {
+            const code = url.searchParams.get('code');
+            if (code) {
+                try {
+                    const exchanged = await sb.auth.exchangeCodeForSession(code);
+                    if (!exchanged.error) data = exchanged.data;
+                } catch (_) {}
+            }
+        }
+
+        if (recoveryMode) {
+            $('auth-gate')?.classList.remove('hidden');
+            document.body.classList.add('auth-locked');
+            showPanel('recovery');
+            if (!data.session) {
+                message('رابط الاستعادة غير صالح أو انتهت صلاحيته. اطلب رابطاً جديداً من «نسيت كلمة السر».', 'error');
+            }
+        } else if (data.session) {
+            await unlock(data.session);
+        } else {
+            showPanel('login');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', init);
