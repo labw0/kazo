@@ -70,8 +70,21 @@
         return data || null;
     }
 
+    const KAZO_SESSION_ACTIVITY_KEY = 'kazo_last_activity';
+    const KAZO_SESSION_TIMEOUT_MS = 12 * 60 * 60 * 1000;
+
+    function markSessionActivity() {
+        localStorage.setItem(KAZO_SESSION_ACTIVITY_KEY, String(Date.now()));
+    }
+
+    function sessionInactiveFor12Hours() {
+        const last = Number(localStorage.getItem(KAZO_SESSION_ACTIVITY_KEY) || 0);
+        return last > 0 && (Date.now() - last >= KAZO_SESSION_TIMEOUT_MS);
+    }
+
     async function unlock(session) {
         if (!session?.user) return;
+        markSessionActivity();
         const profile = await loadProfile(session.user);
         window.kazoCurrentUser = session.user;
         window.kazoCurrentProfile = profile;
@@ -121,6 +134,7 @@
         clearMessage();
         try {
             const session = await signIn($('login-identifier').value, $('login-password').value);
+            markSessionActivity();
             await unlock(session);
         } catch (err) {
             message(err.message === 'Invalid login credentials' ? 'البريد/ID أو كلمة المرور غير صحيحة.' : err.message, 'error');
@@ -236,7 +250,7 @@
         $('recovery-form')?.addEventListener('submit', handleRecovery);
         $('forgot-link')?.addEventListener('click', () => showPanel('forgot'));
         $('forgot-back')?.addEventListener('click', () => showPanel('login'));
-        $('kazo-logout')?.addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
+        $('kazo-logout')?.addEventListener('click', async () => { localStorage.removeItem(KAZO_SESSION_ACTIVITY_KEY); await sb.auth.signOut(); location.reload(); });
 
         sb.auth.onAuthStateChange(async (event, session) => {
             if (event === 'PASSWORD_RECOVERY') {
@@ -262,7 +276,13 @@
             $('auth-gate')?.classList.remove('hidden');
             showPanel('recovery');
         } else if (data.session) {
-            await unlock(data.session);
+            if (sessionInactiveFor12Hours()) {
+                localStorage.removeItem(KAZO_SESSION_ACTIVITY_KEY);
+                await sb.auth.signOut();
+                showPanel('login');
+            } else {
+                await unlock(data.session);
+            }
         } else {
             showPanel('login');
         }
