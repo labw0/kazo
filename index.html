@@ -539,6 +539,67 @@
         </section>
 
         <!-- ============================================== -->
+        <!-- Kazo Golden Tree - لعبة سلوت أصلية مستوحاة بالفكرة فقط -->
+        <!-- ============================================== -->
+        <section id="section-goldentree" class="hidden">
+            <div class="kgt-page">
+                <div class="kgt-topline">
+                    <button class="kgt-back" data-open-section="casino" type="button">‹</button>
+                    <div class="kgt-title-wrap">
+                        <h2>🌳 Kazo Golden Tree</h2>
+                        <p>سلوت كازو التجريبي • 5 بكرات × 3 صفوف</p>
+                    </div>
+                    <div class="kgt-demo-badge">DEMO</div>
+                </div>
+
+                <div class="kgt-statusbar">
+                    <div><span>الرصيد</span><strong id="kgt-balance">0 د.ع</strong></div>
+                    <div><span>الرهان</span><strong id="kgt-bet-label">50 د.ع</strong></div>
+                    <div><span>آخر ربح</span><strong id="kgt-last-win">0 د.ع</strong></div>
+                </div>
+
+                <div class="kgt-machine">
+                    <div class="kgt-glow"></div>
+                    <div class="kgt-logo">
+                        <span class="kgt-tree-logo">🌳</span>
+                        <div><b>KAZO</b><strong>GOLDEN TREE</strong><small>UP TO ×500</small></div>
+                    </div>
+
+                    <div id="kgt-bonus-banner" class="kgt-bonus-banner hidden">
+                        <span>✨ BONUS</span>
+                        <strong id="kgt-bonus-text">مضاعف ×2</strong>
+                    </div>
+
+                    <div id="kgt-reels" class="kgt-reels" aria-label="بكرات اللعبة">
+                        <div class="kgt-reel"></div><div class="kgt-reel"></div><div class="kgt-reel"></div><div class="kgt-reel"></div><div class="kgt-reel"></div>
+                    </div>
+                    <div id="kgt-win-message" class="kgt-win-message">اضغط تدوير وابدأ اللعب</div>
+                </div>
+
+                <div class="kgt-bet-row" id="kgt-bet-row">
+                    <button data-bet="10">10</button>
+                    <button data-bet="25">25</button>
+                    <button class="active" data-bet="50">50</button>
+                    <button data-bet="100">100</button>
+                    <button data-bet="200">200</button>
+                </div>
+
+                <div class="kgt-controls">
+                    <button id="kgt-buy-bonus" class="kgt-buy-bonus" type="button"><span>🌟</span><strong>شراء البونص</strong><small>×20 الرهان</small></button>
+                    <button id="kgt-spin" class="kgt-spin" type="button"><span>↻</span><small>تدوير</small></button>
+                    <button id="kgt-auto" class="kgt-round-btn" type="button"><span>▶</span><small>تلقائي</small></button>
+                    <button id="kgt-turbo" class="kgt-round-btn" type="button"><span>⚡</span><small>سريع</small></button>
+                </div>
+
+                <div class="kgt-help">
+                    <div><span>🌳</span><b>3 أشجار أو أكثر</b><small>تفعّل ميزة المضاعف والجولات المجانية</small></div>
+                    <div><span>⭐</span><b>النجمة Wild</b><small>تستبدل معظم الرموز على خطوط الفوز</small></div>
+                    <div><span>🎰</span><b>لعبة تجريبية</b><small>تستخدم رصيد كازو الافتراضي داخل المتصفح فقط</small></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
         <!-- قسم 4: ألعاب كازو السريعة (Casino Showcase) -->
         <!-- ============================================== -->
         <section id="section-casino" class="hidden space-y-6">
@@ -548,6 +609,12 @@
                     <div><h3 data-i18n="casino">الكازينو</h3><p data-i18n="chooseGame">اختر لعبتك</p></div>
                 </div>
                 <div class="kazo-casino-grid">
+                    <button class="kazo-game-card kgt-launch-card" data-open-section="goldentree">
+                        <span class="game-art kgt-card-art">🌳</span>
+                        <strong>الشجرة الذهبية</strong>
+                        <small>Kazo Golden Tree</small>
+                        <em>جديد</em>
+                    </button>
                     <button class="kazo-game-card crash-launch" data-open-section="crash">
                         <span class="game-art">✈️</span>
                         <strong data-i18n="crashGame">لعبة الطائرة</strong>
@@ -715,6 +782,7 @@
     <script src="sound-engine.js"></script>
     <script src="crash-game.js"></script>
     <script src="apple-game.js"></script>
-    <script src="app.js?v=20260904-ui3"></script>
+    <script src="golden-tree-game.js?v=20260904-golden1"></script>
+    <script src="app.js?v=20260904-golden1"></script>
 </body>
 </html>

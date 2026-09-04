@@ -79,6 +79,7 @@ class App {
         // تشغيل الألعاب
         window.crashGame = new CrashGame();
         window.appleGame = new AppleGame();
+        window.goldenTreeGame = new GoldenTreeGame();
     }
 
     bindNavigation() {
@@ -106,7 +107,7 @@ class App {
         });
 
         // إظهار/إخفاء الأقسام
-        const sections = ['home', 'crash', 'apple', 'sports', 'casino'];
+        const sections = ['home', 'crash', 'apple', 'sports', 'casino', 'goldentree'];
         sections.forEach(sec => {
             const el = document.getElementById(`section-${sec}`);
             if (el) {
@@ -114,6 +115,9 @@ class App {
                     el.classList.remove('hidden');
                     if (sec === 'crash' && window.crashGame) {
                         setTimeout(() => window.crashGame.resizeCanvas(), 50);
+                    }
+                    if (sec === 'goldentree' && window.goldenTreeGame) {
+                        setTimeout(() => window.goldenTreeGame.refresh(), 30);
                     }
                 } else {
                     el.classList.add('hidden');
