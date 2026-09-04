@@ -107,7 +107,7 @@ class App {
         });
 
         // إظهار/إخفاء الأقسام
-        const sections = ['home', 'crash', 'apple', 'sports', 'casino', 'goldentree', 'uncrossable'];
+        const sections = ['home', 'crash', 'apple', 'sports', 'casino', 'goldentree'];
         sections.forEach(sec => {
             const el = document.getElementById(`section-${sec}`);
             if (el) {
@@ -641,70 +641,31 @@ document.addEventListener('kazo:auth-ready', () => {
     window.app = new App();
 });
 
-// ===== Kazo Golden Tree loading -> preview / demo launch =====
+// ===== Kazo Golden Tree preview / demo launch =====
 (function(){
     const modal = document.getElementById('golden-tree-preview-modal');
-    const loading = document.getElementById('golden-tree-loading');
-    const progress = document.getElementById('kgt-loading-progress');
-    const percent = document.getElementById('kgt-loading-percent');
     const openBtn = document.getElementById('open-golden-tree-preview');
     const demoBtn = document.getElementById('kgt-play-demo');
     const realBtn = document.getElementById('kgt-play-real');
     const gameFrame = document.querySelector('#section-goldentree iframe');
-    let timer = null;
-
-    function closeModal(){ modal?.classList.add('hidden'); modal?.setAttribute('aria-hidden','true'); }
-    function openModal(){ modal?.classList.remove('hidden'); modal?.setAttribute('aria-hidden','false'); }
-    function closeLoading(){ loading?.classList.add('hidden'); loading?.setAttribute('aria-hidden','true'); }
-    function startLoading(){
-        if(!loading){ openModal(); return; }
-        closeModal();
-        loading.classList.remove('hidden'); loading.setAttribute('aria-hidden','false');
-        let value=0;
-        if(progress) progress.style.width='0%'; if(percent) percent.textContent='0%';
-        clearInterval(timer);
-        timer=setInterval(()=>{
-            value += value<60 ? 7 : value<88 ? 4 : 2;
-            if(value>=100){
-                value=100;
-                if(progress) progress.style.width='100%'; if(percent) percent.textContent='100%';
-                clearInterval(timer);
-                setTimeout(()=>{ closeLoading(); openModal(); },260);
-                return;
-            }
-            if(progress) progress.style.width=value+'%'; if(percent) percent.textContent=value+'%';
-        },70);
-    }
-
-    openBtn?.addEventListener('click', startLoading);
-    document.querySelectorAll('[data-close-golden-preview]').forEach(x=>x.addEventListener('click', closeModal));
+    const open = () => { if(!modal) return; modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+    const close = () => { if(!modal) return; modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+    openBtn?.addEventListener('click', open);
+    modal?.querySelectorAll('[data-close-golden-preview]').forEach(el => el.addEventListener('click', close));
     demoBtn?.addEventListener('click', () => {
-        closeModal();
-        if(gameFrame) gameFrame.src='games/golden-tree/index.html?mode=demo&v=20260904-final';
-        window.openKazoSection?.('goldentree');
+        if (gameFrame) gameFrame.src = 'games/golden-tree/index.html?mode=demo';
+        close();
         document.querySelector('[data-open-section="goldentree"]')?.click();
-        if(!document.getElementById('section-goldentree')?.classList.contains('hidden')) return;
-        document.querySelectorAll('main > section').forEach(sec=>sec.classList.add('hidden'));
+        window.app?.switchTab?.('goldentree');
+        if (!document.getElementById('section-goldentree')?.classList.contains('hidden')) return;
         document.getElementById('section-goldentree')?.classList.remove('hidden');
+        document.getElementById('section-casino')?.classList.add('hidden');
     });
     realBtn?.addEventListener('click', () => {
-        const t=document.createElement('div'); t.className='kgt-preview-toast';
-        t.textContent='اللعب برصيد مالي حقيقي غير متاح في هذه النسخة.'; document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
+        const t = document.createElement('div');
+        t.className='kgt-preview-toast';
+        t.textContent='اللعب برصيد مالي حقيقي غير متاح في هذه النسخة.';
+        document.body.appendChild(t);
+        setTimeout(()=>t.remove(),2600);
     });
-})();;
-
-
-// ===== Uncrossable Rush loading -> preview / demo =====
-(function(){
- const modal=document.getElementById('uncrossable-preview-modal'), loading=document.getElementById('uncrossable-loading');
- const progress=document.getElementById('rush-loading-progress'), percent=document.getElementById('rush-loading-percent');
- const openBtn=document.getElementById('open-uncrossable-preview'), demoBtn=document.getElementById('rush-play-demo'), realBtn=document.getElementById('rush-play-real');
- const frame=document.querySelector('#section-uncrossable iframe'); let timer=null;
- const closeModal=()=>{modal?.classList.add('hidden');modal?.setAttribute('aria-hidden','true')};
- const openModal=()=>{modal?.classList.remove('hidden');modal?.setAttribute('aria-hidden','false')};
- const closeLoading=()=>{loading?.classList.add('hidden');loading?.setAttribute('aria-hidden','true')};
- openBtn?.addEventListener('click',()=>{closeModal();loading?.classList.remove('hidden');let v=0;progress.style.width='0%';percent.textContent='0%';clearInterval(timer);timer=setInterval(()=>{v=Math.min(100,v+4);progress.style.width=v+'%';percent.textContent=v+'%';if(v>=100){clearInterval(timer);setTimeout(()=>{closeLoading();openModal()},250)}},70)});
- document.querySelectorAll('[data-close-rush-preview]').forEach(x=>x.addEventListener('click',closeModal));
- demoBtn?.addEventListener('click',()=>{closeModal();if(frame)frame.src='games/uncrossable-rush/index.html?mode=demo&v=20260904';document.querySelectorAll('main > section').forEach(x=>x.classList.add('hidden'));document.getElementById('section-uncrossable')?.classList.remove('hidden')});
- realBtn?.addEventListener('click',()=>{const t=document.createElement('div');t.className='kgt-preview-toast';t.textContent='قريبًا';document.body.appendChild(t);setTimeout(()=>t.remove(),2200)});
 })();
