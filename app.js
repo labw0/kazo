@@ -59,21 +59,18 @@ class Wallet {
 
 class App {
     constructor() {
-        this.activeTab = 'crash';
+        this.activeTab = 'home';
         this.init();
     }
 
     init() {
         window.wallet = new Wallet();
 
-        // تحديث الرصيد في الواجهة
-        window.wallet.subscribe((bal) => {
-            document.querySelectorAll('.wallet-balance-display').forEach(el => {
-                el.textContent = `${bal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $`;
-            });
-        });
+        // تحديث الرصيد في الواجهة حسب اللغة: د.ع بالعربي / دولار بالإنجليزي
+        window.wallet.subscribe((bal) => this.renderWalletBalance(bal));
 
         this.bindNavigation();
+        this.bindShellUI();
         this.bindModals();
         this.bindSoundToggle();
         this.initSportsbook();
@@ -109,7 +106,7 @@ class App {
         });
 
         // إظهار/إخفاء الأقسام
-        const sections = ['crash', 'apple', 'sports', 'casino'];
+        const sections = ['home', 'crash', 'apple', 'sports', 'casino'];
         sections.forEach(sec => {
             const el = document.getElementById(`section-${sec}`);
             if (el) {
@@ -123,6 +120,157 @@ class App {
                 }
             }
         });
+    }
+
+    renderWalletBalance(balance = window.wallet?.balance || 0) {
+        const lang = localStorage.getItem('kazo_lang') || 'ar';
+        document.querySelectorAll('.wallet-balance-display').forEach(el => {
+            if (lang === 'en') {
+                const usd = balance / 1300;
+                el.textContent = `$${usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            } else {
+                el.textContent = `${Math.round(balance).toLocaleString('en-US')} د.ع`;
+            }
+        });
+    }
+
+    bindShellUI() {
+        const dict = {
+            ar: {
+                search:'البحث عن لعبة أو مباراة...', todayEvents:'أحداث اليوم', finals:'النهائيات', casino:'كازينو',
+                profile:'ملفي', deposit:'إيداع', withdraw:'سحب', bonus:'البونص', messages:'الرسائل', myBets:'رهاناتي',
+                accountHistory:'سجل الحساب', logout:'تسجيل خروج', exclusiveOffers:'عروض حصرية', waitingYou:'بانتظارك!',
+                offersSoon:'تابع جديد العروض ولا تفوتها', favorites:'المفضلة', today:'اليوم', football:'كرة القدم', basketball:'كرة السلة',
+                tennis:'كرة المضرب', volleyball:'كرة طائرة', playNow:'إلعب الآن', liveMatches:'مباريات مباشرة', noGames:'لا توجد ألعاب متاحة',
+                noEvents:'لا توجد أحداث ذات احتمالات معززة حالياً. حاول مرة أخرى لاحقاً.', chooseGame:'اختر لعبتك', crashGame:'لعبة الطائرة',
+                appleGame:'لعبة التفاحة', offers:'العروض', betSlip:'قسيمة رهانك', upcoming:'مباريات لم تبدأ', depositBalance:'إيداع رصيد',
+                depositSoonText:'سيتم إضافة وسائل الإيداع قريباً', soon:'قريباً', betDate:'تاريخ الرهان', betHistory:'سجل تاريخ الرهان'
+            },
+            en: {
+                search:'Search for a game or match...', todayEvents:"Today's Events", finals:'Finals', casino:'Casino',
+                profile:'My Profile', deposit:'Deposit', withdraw:'Withdraw', bonus:'Bonus', messages:'Messages', myBets:'My Bets',
+                accountHistory:'Account History', logout:'Log Out', exclusiveOffers:'Exclusive Offers', waitingYou:'Waiting for you!',
+                offersSoon:'Follow the latest offers and do not miss out', favorites:'Favorites', today:'Today', football:'Football', basketball:'Basketball',
+                tennis:'Tennis', volleyball:'Volleyball', playNow:'Play Now', liveMatches:'Live Matches', noGames:'No Games Available',
+                noEvents:'There are no boosted-odds events right now. Try again later.', chooseGame:'Choose your game', crashGame:'Crash Plane',
+                appleGame:'Apple Game', offers:'Offers', betSlip:'Bet Slip', upcoming:'Upcoming Matches', depositBalance:'Deposit Balance',
+                depositSoonText:'Deposit methods will be added soon', soon:'Coming Soon', betDate:'Bet Date', betHistory:'Bet History'
+            }
+        };
+
+        const applyLanguage = (lang) => {
+            localStorage.setItem('kazo_lang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (dict[lang][key]) el.textContent = dict[lang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                if (dict[lang][key]) el.placeholder = dict[lang][key];
+            });
+            document.querySelectorAll('.kazo-language-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+            // ترجمة النصوص الثابتة القديمة في صفحات الألعاب أيضاً، مع حفظ النص العربي للرجوع إليه.
+            const legacy = {
+                'الربح الحالي المتاح للسحب':'Current winnings available to cash out',
+                'اختر تفاحة واحدة في كل طابق. تجنب التفاح الفاسد 🍏💀 واصعد للأعلى لمضاعفة أرباحك!':'Pick one apple on each floor. Avoid the bad apples and climb to multiply your winnings!',
+                'رهان تفاحة الحظ':'Apple Fortune Bet', 'مبلغ الرهان ($)':'Bet amount ($)', 'بدء اللعبة الآن 🍏':'Start Game 🍏',
+                'سحب الأرباح الآن 💰':'Cash Out 💰', 'دليل صعوبة الطوابق:':'Floor difficulty guide:',
+                'المستويات 1 - 4:':'Levels 1 - 4:', 'المستويات 5 - 7:':'Levels 5 - 7:', 'المستويات 8 - 9:':'Levels 8 - 9:', 'المستوى الأخير 10:':'Final level 10:',
+                'الرهانات الحية في هذه الجولة':'Live bets in this round', 'اللاعب':'Player', 'الرهان':'Bet', 'المضاعف':'Multiplier', 'النتيجة':'Result',
+                'مبلغ الرهان':'Bet amount', 'سحب تلقائي عند مضاعف (اختياري)':'Auto cashout multiplier (optional)', 'راهن الآن (الجولة الحالية)':'Bet now (current round)',
+                'في انتظار إقلاع الطائرة...':'Waiting for takeoff...', 'تبدأ الطائرة في: 5.0 ث':'Plane starts in: 5.0s', 'مبلغ السحب:':'Cashout amount:',
+                'المراهنات الرياضية المباشرة (Kazo Sports)':'Live Sports Betting (Kazo Sports)', '● مباريات جارية الآن':'● Matches live now',
+                'سجل الرهانات والأرباح':'Betting & Winnings History', 'اللعبة':'Game', 'الربح':'Win', 'الوقت':'Time',
+                'نادي كازو VIP الذهبي':'Kazo Gold VIP Club', 'لعب مسؤول':'Responsible Gaming', 'إثبات العدالة':'Fairness Proof',
+                'نسيت كلمة السر؟':'Forgot password?', 'تسجيل الدخول':'Log In', 'إنشاء حساب':'Create Account', 'الاسم':'Name', 'الإيميل':'Email',
+                'الإيميل أو ID':'Email or ID', 'كلمة المرور':'Password', 'كلمة مرور جديدة':'New Password', 'استعادة كلمة المرور':'Password Recovery',
+                'إرسال رابط الاستعادة':'Send Recovery Link', 'العودة إلى تسجيل الدخول':'Back to Login', 'حفظ كلمة المرور':'Save Password'
+            };
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+            nodes.forEach(node => {
+                const value = node.nodeValue.trim(); if (!value) return;
+                if (!node.parentElement?.dataset?.i18n) {
+                    if (!node.parentElement.dataset.kazoAr && legacy[value]) node.parentElement.dataset.kazoAr = value;
+                    const ar = node.parentElement.dataset.kazoAr;
+                    if (ar && legacy[ar]) node.nodeValue = node.nodeValue.replace(value, lang === 'en' ? legacy[ar] : ar);
+                }
+            });
+            this.renderWalletBalance();
+        };
+
+        const openDrawer = (kind) => {
+            const shell = document.getElementById(kind === 'main' ? 'main-drawer-shell' : 'profile-drawer-shell');
+            if (!shell) return;
+            shell.classList.remove('hidden');
+            shell.setAttribute('aria-hidden','false');
+            document.body.style.overflow='hidden';
+        };
+        const closeDrawer = (kind) => {
+            const shell = document.getElementById(kind === 'main' ? 'main-drawer-shell' : 'profile-drawer-shell');
+            if (!shell) return;
+            shell.classList.add('hidden');
+            shell.setAttribute('aria-hidden','true');
+            document.body.style.overflow='';
+        };
+
+        document.getElementById('open-main-drawer')?.addEventListener('click', () => openDrawer('main'));
+        document.getElementById('open-profile-drawer')?.addEventListener('click', () => openDrawer('profile'));
+        document.querySelectorAll('[data-close-drawer]').forEach(btn => btn.addEventListener('click', () => closeDrawer(btn.dataset.closeDrawer)));
+
+        document.querySelectorAll('[data-lang]').forEach(btn => btn.addEventListener('click', () => applyLanguage(btn.dataset.lang)));
+        applyLanguage(localStorage.getItem('kazo_lang') || 'ar');
+        setTimeout(() => applyLanguage(localStorage.getItem('kazo_lang') || 'ar'), 0);
+
+        const openBets = () => {
+            document.getElementById('bets-modal')?.classList.remove('hidden');
+            document.body.style.overflow='hidden';
+        };
+        document.getElementById('open-bets-modal')?.addEventListener('click', openBets);
+        document.getElementById('bottom-open-bets')?.addEventListener('click', openBets);
+        document.getElementById('close-bets-modal')?.addEventListener('click', () => {
+            document.getElementById('bets-modal')?.classList.add('hidden');
+            document.body.style.overflow='';
+        });
+
+        document.querySelectorAll('[data-open-section]').forEach(btn => btn.addEventListener('click', () => {
+            closeDrawer('main');
+            closeDrawer('profile');
+            this.switchTab(btn.dataset.openSection);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.soundEngine?.playClick?.();
+        }));
+        document.getElementById('kazo-home-logo')?.addEventListener('click', (e) => { e.preventDefault(); this.switchTab('home'); });
+
+        document.querySelectorAll('.soon-action').forEach(btn => btn.addEventListener('click', () => {
+            const lang = localStorage.getItem('kazo_lang') || 'ar';
+            this.showToast(lang === 'en' ? 'Coming soon' : 'قريباً', 'info');
+        }));
+
+        document.querySelectorAll('.kazo-home-search input').forEach(input => input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') this.showToast((localStorage.getItem('kazo_lang') || 'ar') === 'en' ? 'Search is coming soon' : 'البحث قريباً', 'info');
+        }));
+        document.getElementById('drawer-search-input')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') this.showToast((localStorage.getItem('kazo_lang') || 'ar') === 'en' ? 'Search is coming soon' : 'البحث قريباً', 'info');
+        });
+
+        document.addEventListener('kazo:auth-ready', (e) => {
+            const name = e.detail?.profile?.name || e.detail?.user?.user_metadata?.name || 'Kazo';
+            const id = e.detail?.profile?.public_id;
+            const nameEl = document.getElementById('profile-drawer-name');
+            const idEl = document.getElementById('profile-drawer-id');
+            if (nameEl) nameEl.textContent = name;
+            if (idEl) idEl.textContent = id ? `ID ${id}` : 'ID ...';
+        }, { once:false });
+        const currentName = window.kazoCurrentProfile?.name || window.kazoCurrentUser?.user_metadata?.name || 'Kazo';
+        const currentId = window.kazoCurrentProfile?.public_id;
+        if (document.getElementById('profile-drawer-name')) document.getElementById('profile-drawer-name').textContent = currentName;
+        if (document.getElementById('profile-drawer-id')) document.getElementById('profile-drawer-id').textContent = currentId ? `ID ${currentId}` : 'ID ...';
+
+        this.switchTab('home');
     }
 
     bindSoundToggle() {

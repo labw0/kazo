@@ -6,9 +6,6 @@
     const $ = (id) => document.getElementById(id);
     let sb = null;
     let pendingSignupEmail = '';
-    // Keep recovery links locked on the password-reset screen.
-    let recoveryMode = new URLSearchParams(location.search).get('type') === 'recovery' ||
-        new URLSearchParams(location.hash.replace(/^#/, '')).get('type') === 'recovery';
 
     const configReady = () => {
         const url = window.KAZO_SUPABASE_URL || '';
@@ -209,14 +206,10 @@
         try {
             const { error } = await sb.auth.updateUser({ password: p1 });
             if (error) throw error;
-            // A recovery link creates a temporary authenticated session. Do not
-            // unlock the app with that session; end it and return to normal login.
             recoveryMode = false;
             await sb.auth.signOut();
-            $('recovery-password').value = '';
-            $('recovery-password-confirm').value = '';
             showPanel('login');
-            message('تم تغيير كلمة المرور بنجاح. سجّل الدخول الآن بكلمة المرور الجديدة.', 'success');
+            message('تم تغيير كلمة المرور بنجاح، يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.', 'success');
         } catch (err) {
             message(err.message, 'error');
         } finally {
@@ -260,11 +253,13 @@
             }
         });
 
+        const recoveryInUrl = /(?:[?#&])type=recovery(?:&|$)/.test(location.href) || location.hash.includes('type=recovery');
+        if (recoveryInUrl) recoveryMode = true;
+
         const { data } = await sb.auth.getSession();
-        // Never treat the temporary recovery session as a normal login.
         if (recoveryMode) {
-            $('auth-gate')?.classList.remove('hidden');
             document.body.classList.add('auth-locked');
+            $('auth-gate')?.classList.remove('hidden');
             showPanel('recovery');
         } else if (data.session) {
             await unlock(data.session);

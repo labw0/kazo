@@ -111,102 +111,77 @@
         </div>
     </div>
 
-    <!-- 1. شريط التنقل العلوي (Header بأسلوب 1xBet) -->
-    <header class="sticky top-0 z-40 bg-[#0d1527]/95 backdrop-blur-md border-b border-slate-800 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            
-            <!-- الشعار -->
-            <div class="flex items-center gap-3">
-                <a href="#" class="flex items-center gap-2.5 group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-xl text-slate-950 shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition">
-                        K
-                    </div>
-                    <div>
-                        <div class="text-2xl font-black tracking-wider text-white flex items-center gap-1">
-                            <span>KAZO</span>
-                            <span class="text-cyan-400 text-sm font-bold bg-cyan-950 px-1.5 py-0.5 rounded border border-cyan-800/50">كازو</span>
-                        </div>
-                        <div class="text-[10px] text-gray-400 font-semibold tracking-wide">CASINO & BETTING</div>
-                    </div>
-                </a>
-            </div>
+    <!-- شريط Kazo الرئيسي الجديد -->
+    <header class="kazo-topbar sticky top-0 z-40">
+        <div class="kazo-topbar-inner">
+            <a href="#" class="kazo-brand" id="kazo-home-logo" aria-label="Kazo">
+                <span class="kazo-brand-mark">⚡</span>
+                <span class="kazo-brand-name">Kazo</span>
+            </a>
 
-            <!-- محفظة الرصيد والأزرار السريعة -->
-            <div class="flex items-center gap-2 sm:gap-4">
-                
-                <!-- عرض الرصيد الافتراضي -->
-                <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-2xl p-1.5 pr-3 shadow-inner">
-                    <div class="flex flex-col text-right ml-2 sm:ml-3">
-                        <span class="text-[10px] text-slate-400 font-medium">الرصيد الافتراضي</span>
-                        <span class="wallet-balance-display font-mono font-black text-sm sm:text-base text-emerald-400">1,000.00 $</span>
-                    </div>
-                    <!-- زر شحن الرصيد التجريبي -->
-                    <button id="open-deposit-modal" title="شحن رصيد إضافي مجاناً" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs px-3 py-2 rounded-xl flex items-center gap-1 shadow-md shadow-emerald-500/20 transition transform active:scale-95">
-                        <span class="text-sm">+</span>
-                        <span class="hidden sm:inline">إيداع مجاني</span>
-                    </button>
-                </div>
+            <button id="open-deposit-modal" class="kazo-wallet-capsule" type="button" aria-label="الرصيد والإيداع">
+                <span class="wallet-balance-display">1,000 د.ع</span>
+                <span class="kazo-wallet-plus">+</span>
+            </button>
 
-                <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-2">
-                    <div class="text-right leading-tight">
-                        <div id="header-user-name" class="text-xs font-bold text-white">مستخدم</div>
-                        <div id="header-user-id" class="text-[10px] font-mono text-cyan-400">ID ...</div>
-                    </div>
-                    <button id="kazo-logout" title="تسجيل الخروج" class="text-xs text-red-300 hover:text-red-200">خروج</button>
-                </div>
-
-                <!-- زر المؤثرات الصوتية -->
-                <button id="sound-toggle-btn" title="تبديل الصوت" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-lg transition">
-                    <span id="sound-toggle-icon">🔊</span>
-                </button>
-
-                <!-- زر سجل الرهانات -->
-                <button id="open-history-modal" title="سجل الرهانات" class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-gray-300 transition">
-                    <span>📋</span>
-                    <span>السجل</span>
-                </button>
-
-                <!-- شارة المستخدم VIP -->
-                <button id="open-vip-modal" class="flex items-center gap-2 p-1.5 bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 rounded-xl transition">
-                    <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold font-mono">
-                        👑
-                    </div>
-                    <span class="hidden md:inline text-xs font-bold text-amber-300">VIP كازو</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- شريط التبويبات الرئيسي (الأقسام) -->
-        <div class="bg-[#0a0f1d] border-t border-slate-800/80 px-4 sm:px-6">
-            <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto py-2 scrollbar-none">
-                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20 transition whitespace-nowrap" data-tab="crash">
-                    <span class="text-base">🛩️</span>
-                    <span>لعبة الطيارة (Crash)</span>
-                </button>
-
-                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-gray-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap" data-tab="apple">
-                    <span class="text-base">🍏</span>
-                    <span>لعبة التفاحة (Apple of Fortune)</span>
-                </button>
-
-                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-gray-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap" data-tab="sports">
-                    <span class="text-base">⚽</span>
-                    <span>المراهنات الرياضية (مباشر)</span>
-                </button>
-
-                <button class="nav-tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-gray-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap" data-tab="casino">
-                    <span class="text-base">🎰</span>
-                    <span>ألعاب كازو السريعة</span>
-                </button>
-            </div>
+            <button id="open-bets-modal" class="kazo-header-icon" type="button" title="رهاناتي" aria-label="رهاناتي">📰</button>
+            <button id="open-profile-drawer" class="kazo-header-icon" type="button" title="الملف الشخصي" aria-label="الملف الشخصي">👤</button>
+            <button id="open-main-drawer" class="kazo-menu-btn" type="button" title="القائمة" aria-label="القائمة">☰</button>
         </div>
     </header>
+
+    <!-- القائمة الرئيسية من اليمين - 75% -->
+    <div id="main-drawer-shell" class="kazo-drawer-shell hidden" aria-hidden="true">
+        <button class="kazo-drawer-dismiss" data-close-drawer="main" aria-label="إغلاق القائمة"></button>
+        <aside id="main-drawer" class="kazo-main-drawer">
+            <div class="kazo-drawer-head">
+                <div class="kazo-drawer-brand"><span>⚡</span><strong>Kazo</strong></div>
+                <button class="kazo-drawer-x" data-close-drawer="main">✕</button>
+            </div>
+            <div class="kazo-language-row">
+                <button class="kazo-language-btn active" data-lang="ar"><span>🇮🇶</span><span>العربية</span></button>
+                <button class="kazo-language-btn" data-lang="en"><span>🇺🇸</span><span>English</span></button>
+            </div>
+            <div class="kazo-drawer-search">
+                <span>⌕</span>
+                <input id="drawer-search-input" data-i18n-placeholder="search" placeholder="البحث عن لعبة أو مباراة...">
+            </div>
+            <div class="kazo-drawer-links">
+                <button class="kazo-drawer-link soon-action"><span>📅</span><span data-i18n="todayEvents">أحداث اليوم</span><b>‹</b></button>
+                <button class="kazo-drawer-link soon-action"><span>🏆</span><span data-i18n="finals">النهائيات</span><b>‹</b></button>
+                <button class="kazo-drawer-link" data-open-section="casino"><span>🎰</span><span data-i18n="casino">كازينو</span><b>‹</b></button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- قائمة المستخدم من اليسار - 40% -->
+    <div id="profile-drawer-shell" class="kazo-drawer-shell hidden" aria-hidden="true">
+        <button class="kazo-profile-dismiss" data-close-drawer="profile" aria-label="إغلاق القائمة"></button>
+        <aside id="profile-drawer" class="kazo-profile-drawer">
+            <div class="kazo-profile-head">
+                <button class="kazo-drawer-x" data-close-drawer="profile">✕</button>
+                <div class="kazo-profile-avatar">👤</div>
+                <strong id="profile-drawer-name">Kazo</strong>
+                <span id="profile-drawer-id">ID ...</span>
+            </div>
+            <div class="kazo-profile-links">
+                <button class="soon-action"><span>👤</span><span data-i18n="profile">ملفي</span></button>
+                <button class="soon-action"><span>💳</span><span data-i18n="deposit">إيداع</span></button>
+                <button class="soon-action"><span>💸</span><span data-i18n="withdraw">سحب</span></button>
+                <button class="soon-action"><span>🎁</span><span data-i18n="bonus">البونص</span></button>
+                <button class="soon-action"><span>✉️</span><span data-i18n="messages">الرسائل</span></button>
+                <button class="soon-action"><span>🧾</span><span data-i18n="myBets">رهاناتي</span></button>
+                <button class="soon-action"><span>🕘</span><span data-i18n="accountHistory">سجل الحساب</span></button>
+                <button class="soon-action kazo-logout-soon"><span>🚪</span><span data-i18n="logout">تسجيل خروج</span></button>
+            </div>
+        </aside>
+    </div>
 
     <!-- المحتوى الرئيسي -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
         <!-- بانر إعلاني تشويقي بأسلوب 1xBet -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-4 sm:p-6 mb-6 border border-cyan-500/20 shadow-2xl">
+        <div class="hidden relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-4 sm:p-6 mb-6 border border-cyan-500/20 shadow-2xl">
             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="text-center md:text-right">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold border border-cyan-500/40 mb-2">
@@ -238,6 +213,49 @@
         <!-- ============================================== -->
         <!-- قسم 1: لعبة الطيارة (KAZO Crash / Aviator) -->
         <!-- ============================================== -->
+        <section id="section-home" class="kazo-home-section space-y-5">
+            <div class="kazo-promo-card">
+                <div class="kazo-gift-art">🎁</div>
+                <div class="kazo-promo-copy">
+                    <h2 data-i18n="exclusiveOffers">عروض حصرية</h2>
+                    <strong data-i18n="waitingYou">بانتظارك!</strong>
+                    <p data-i18n="offersSoon">تابع جديد العروض ولا تفوتها</p>
+                </div>
+                <div class="kazo-promo-dots"><i class="active"></i><i></i><i></i><i></i></div>
+            </div>
+
+            <div class="kazo-home-search"><span>⌕</span><input data-i18n-placeholder="search" placeholder="البحث عن لعبة أو مباراة..."></div>
+
+            <div class="kazo-quick-row">
+                <button class="soon-action"><span>⭐</span><span data-i18n="favorites">المفضلة</span></button>
+                <button class="soon-action"><span>📅</span><span data-i18n="today">اليوم</span></button>
+                <button class="soon-action"><span>🏆</span><span data-i18n="finals">النهائيات</span></button>
+                <button class="soon-action"><span>🔥</span><span data-i18n="todayEvents">أحداث اليوم</span></button>
+            </div>
+
+            <div class="kazo-sports-row">
+                <button class="soon-action"><span class="sport-emoji">⚽</span><b>1385</b><small data-i18n="football">كرة القدم</small></button>
+                <button class="soon-action"><span class="sport-emoji">🏀</span><b>68</b><small data-i18n="basketball">كرة السلة</small></button>
+                <button class="soon-action"><span class="sport-emoji">🎾</span><b>166</b><small data-i18n="tennis">كرة المضرب</small></button>
+                <button class="soon-action"><span class="sport-emoji">🏐</span><b>11</b><small data-i18n="volleyball">كرة طائرة</small></button>
+            </div>
+
+            <div class="kazo-feature-grid">
+                <button class="kazo-feature-card casino-card" data-open-section="casino">
+                    <span class="feature-icon">🎰</span><strong data-i18n="casino">الكازينو</strong><small data-i18n="playNow">إلعب الآن</small>
+                </button>
+                <button class="kazo-feature-card live-card" data-open-section="sports">
+                    <span class="feature-icon">🏟️</span><strong data-i18n="liveMatches">مباريات مباشرة</strong><small>LIVE</small>
+                </button>
+            </div>
+
+            <div class="kazo-empty-card">
+                <div>🏅</div>
+                <h3 data-i18n="noGames">لا توجد ألعاب متاحة</h3>
+                <p data-i18n="noEvents">لا توجد أحداث ذات احتمالات معززة حالياً. حاول مرة أخرى لاحقاً.</p>
+            </div>
+        </section>
+
         <section id="section-crash" class="space-y-6">
             
             <!-- شريط تاريخ المضاعفات السابقة -->
@@ -522,49 +540,38 @@
         <!-- قسم 4: ألعاب كازو السريعة (Casino Showcase) -->
         <!-- ============================================== -->
         <section id="section-casino" class="hidden space-y-6">
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl text-center">
-                <h3 class="text-2xl font-black text-white mb-2">🎰 كازينو كازو | KAZO CASINO</h3>
-                <p class="text-slate-400 text-sm max-w-xl mx-auto mb-8">
-                    مجموعة من أشهر ألعاب الكازينو والألعاب السريعة المحبوبة، قادمة ومتاحة للتجربة!
-                </p>
-
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    
-                    <!-- لعبة الروليت -->
-                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('لعبة الروليت الكلاسيكية قادمة في التحديث القادم!', 'info')">
-                        <div class="text-5xl mb-3 group-hover:scale-110 transition">🎡</div>
-                        <h4 class="font-bold text-white text-base">الروليت الملكي</h4>
-                        <span class="text-xs text-cyan-400 font-mono mt-1 inline-block">Roulette VIP</span>
-                    </div>
-
-                    <!-- لعبة الألغام Mines -->
-                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('لعبة الألغام Mines قادمة قريباً!', 'info')">
-                        <div class="text-5xl mb-3 group-hover:scale-110 transition">💣</div>
-                        <h4 class="font-bold text-white text-base">لعبة الألغام</h4>
-                        <span class="text-xs text-amber-400 font-mono mt-1 inline-block">Mines 1xBet</span>
-                    </div>
-
-                    <!-- لعبة عجلة الحظ -->
-                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('عجلة الحظ الدوارة قادمة قريباً!', 'info')">
-                        <div class="text-5xl mb-3 group-hover:scale-110 transition">🎯</div>
-                        <h4 class="font-bold text-white text-base">عجلة الحظ</h4>
-                        <span class="text-xs text-emerald-400 font-mono mt-1 inline-block">Wheel of Fortune</span>
-                    </div>
-
-                    <!-- لعبة النرد Dice -->
-                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-cyan-400 transition transform hover:-translate-y-1 shadow-lg group cursor-pointer" onclick="window.app.showToast('لعبة النرد والمضاعف قادمة قريباً!', 'info')">
-                        <div class="text-5xl mb-3 group-hover:scale-110 transition">🎲</div>
-                        <h4 class="font-bold text-white text-base">النرد الكلاسيكي</h4>
-                        <span class="text-xs text-purple-400 font-mono mt-1 inline-block">Classic Dice</span>
-                    </div>
+            <div class="kazo-casino-page">
+                <div class="kazo-section-head">
+                    <button class="kazo-back-home" data-open-section="home">‹</button>
+                    <div><h3 data-i18n="casino">الكازينو</h3><p data-i18n="chooseGame">اختر لعبتك</p></div>
+                </div>
+                <div class="kazo-casino-grid">
+                    <button class="kazo-game-card crash-launch" data-open-section="crash">
+                        <span class="game-art">✈️</span>
+                        <strong data-i18n="crashGame">لعبة الطائرة</strong>
+                        <small>Crash</small>
+                    </button>
+                    <button class="kazo-game-card apple-launch" data-open-section="apple">
+                        <span class="game-art">🍎</span>
+                        <strong data-i18n="appleGame">لعبة التفاحة</strong>
+                        <small>Apple</small>
+                    </button>
                 </div>
             </div>
         </section>
 
     </main>
 
+    <nav id="kazo-bottom-nav" class="kazo-bottom-nav">
+        <button class="soon-action"><span>🎁</span><small data-i18n="offers">العروض</small></button>
+        <button data-open-section="casino"><span>🎰</span><small data-i18n="casino">الكازينو</small></button>
+        <button id="bottom-open-bets"><span>🧾</span><small data-i18n="betSlip">قسيمة رهانك</small></button>
+        <button class="soon-action"><span>📣</span><small data-i18n="upcoming">مباريات لم تبدأ</small></button>
+        <button data-open-section="sports"><span>🏟️</span><small data-i18n="liveMatches">المباريات المباشرة</small></button>
+    </nav>
+
     <!-- الفوتر -->
-    <footer class="bg-[#0a0f1d] border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-500">
+    <footer class="kazo-legacy-footer bg-[#0a0f1d] border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-500">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
                 <span class="font-black text-cyan-400">KAZO</span>
@@ -584,42 +591,31 @@
     <!-- النوافذ المنبثقة (Modals) -->
     <!-- ============================================== -->
 
-    <!-- 1. نافذة الإيداع وشحن الرصيد المجاني -->
-    <div id="deposit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button id="close-deposit-modal" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">✕</button>
-            
-            <div class="text-center mb-6">
-                <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
-                    💵
-                </div>
-                <h3 class="text-xl font-black text-white">إيداع رصيد تجريبي مجاني</h3>
-                <p class="text-xs text-slate-400 mt-1">اختر الباقة التجريبية التي ترغب في إضافتها لمحفظتك فوراً</p>
-            </div>
+    <!-- نافذة الإيداع -->
+    <div id="deposit-modal" class="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="kazo-simple-modal">
+            <button id="close-deposit-modal" class="kazo-modal-x">✕</button>
+            <div class="text-5xl mb-4">💳</div>
+            <h3 data-i18n="depositBalance">إيداع رصيد</h3>
+            <p data-i18n="depositSoonText">سيتم إضافة وسائل الإيداع قريباً</p>
+            <div class="kazo-soon-pill" data-i18n="soon">قريباً</div>
+        </div>
+    </div>
 
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <button class="quick-deposit-btn bg-slate-800 hover:bg-emerald-600 hover:text-white p-3 rounded-xl border border-slate-700 font-bold font-mono text-center transition" data-amount="100">
-                    <span class="block text-emerald-400 text-lg font-black">+100 $</span>
-                    <span class="text-[10px] text-gray-400">مبتدئ</span>
-                </button>
-                <button class="quick-deposit-btn bg-slate-800 hover:bg-emerald-600 hover:text-white p-3 rounded-xl border border-slate-700 font-bold font-mono text-center transition" data-amount="500">
-                    <span class="block text-emerald-400 text-lg font-black">+500 $</span>
-                    <span class="text-[10px] text-gray-400">متوسط</span>
-                </button>
-                <button class="quick-deposit-btn bg-slate-800 hover:bg-emerald-600 hover:text-white p-3 rounded-xl border border-slate-700 font-bold font-mono text-center transition" data-amount="1000">
-                    <span class="block text-emerald-400 text-lg font-black">+1,000 $</span>
-                    <span class="text-[10px] text-amber-400">VIP</span>
-                </button>
-            </div>
-
-            <div class="text-center text-xs text-gray-500">
-                * هذا رصيد تدريبي افتراضي للترفيه والمحاكاة الكاملة.
+    <!-- نافذة رهاناتي بكامل الشاشة -->
+    <div id="bets-modal" class="fixed inset-0 z-[85] bg-[#07111f] hidden overflow-y-auto">
+        <div class="kazo-bets-page">
+            <button id="close-bets-modal" class="kazo-modal-x">✕</button>
+            <h2 data-i18n="myBets">رهاناتي</h2>
+            <div class="kazo-bets-cards">
+                <button class="soon-action"><span>📅</span><strong data-i18n="betDate">تاريخ الرهان</strong><em data-i18n="soon">قريباً</em></button>
+                <button class="soon-action"><span>📋</span><strong data-i18n="betHistory">سجل تاريخ الرهان</strong><em data-i18n="soon">قريباً</em></button>
             </div>
         </div>
     </div>
 
     <!-- 2. نافذة سجل الرهانات -->
-    <div id="history-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div id="history-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
             <button id="close-history-modal" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">✕</button>
 
@@ -648,7 +644,7 @@
     </div>
 
     <!-- 3. نافذة VIP -->
-    <div id="vip-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div id="vip-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-center">
             <button id="close-vip-modal" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl">✕</button>
             <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
@@ -667,10 +663,10 @@
     <!-- استدعاء ملفات السكربت بترتيب سليم -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
-    <script src="auth.js?v=20260904-recovery3"></script>
+    <script src="auth.js?v=20260904-ui3"></script>
     <script src="sound-engine.js"></script>
     <script src="crash-game.js"></script>
     <script src="apple-game.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=20260904-ui3"></script>
 </body>
 </html>
