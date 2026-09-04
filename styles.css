@@ -113,7 +113,10 @@ body {
 /* KAZO authentication */
 body.auth-locked > header,
 body.auth-locked > main,
-body.auth-locked > footer {
+body.auth-locked > footer,
+body.auth-checking > header,
+body.auth-checking > main,
+body.auth-checking > footer {
     display: none !important;
 }
 

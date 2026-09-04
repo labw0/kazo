@@ -89,7 +89,7 @@
         const profile = await loadProfile(session.user);
         window.kazoCurrentUser = session.user;
         window.kazoCurrentProfile = profile;
-        document.body.classList.remove('auth-locked');
+        document.body.classList.remove('auth-checking', 'auth-locked');
         $('auth-gate')?.classList.add('hidden');
         if ($('header-user-name')) $('header-user-name').textContent = profile?.name || session.user.user_metadata?.name || 'مستخدم';
         if ($('header-user-id')) $('header-user-id').textContent = profile?.public_id ? `ID ${profile.public_id}` : 'ID ...';
@@ -234,6 +234,10 @@
 
     async function init() {
         if (!configReady()) {
+            document.body.classList.remove('auth-checking');
+            document.body.classList.add('auth-locked');
+            $('auth-gate')?.classList.remove('hidden');
+            showPanel('login');
             message('المشروع جاهز، لكن يجب وضع SUPABASE URL و Publishable Key داخل ملف supabase-config.js أولاً.', 'warning');
             return;
         }
@@ -268,6 +272,7 @@
                 return;
             }
             if (event === 'SIGNED_OUT') {
+                document.body.classList.remove('auth-checking');
                 document.body.classList.add('auth-locked');
                 $('auth-gate')?.classList.remove('hidden');
                 showPanel('login');
@@ -279,6 +284,7 @@
 
         const { data } = await sb.auth.getSession();
         if (recoveryMode) {
+            document.body.classList.remove('auth-checking');
             document.body.classList.add('auth-locked');
             $('auth-gate')?.classList.remove('hidden');
             showPanel('recovery');
@@ -286,11 +292,17 @@
             if (sessionInactiveFor12Hours()) {
                 localStorage.removeItem(KAZO_SESSION_ACTIVITY_KEY);
                 await sb.auth.signOut();
+                document.body.classList.remove('auth-checking');
+                document.body.classList.add('auth-locked');
+                $('auth-gate')?.classList.remove('hidden');
                 showPanel('login');
             } else {
                 await unlock(data.session);
             }
         } else {
+            document.body.classList.remove('auth-checking');
+            document.body.classList.add('auth-locked');
+            $('auth-gate')?.classList.remove('hidden');
             showPanel('login');
         }
     }
