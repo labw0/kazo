@@ -680,7 +680,7 @@ document.addEventListener('kazo:auth-ready', () => {
     document.querySelectorAll('[data-close-golden-preview]').forEach(x=>x.addEventListener('click', closeModal));
     demoBtn?.addEventListener('click', () => {
         closeModal();
-        if(gameFrame) gameFrame.src='games/golden-tree/index.html?mode=demo&v=20260904-final';
+        if(gameFrame) gameFrame.src='games/golden-tree/index.html?partnerId=1409&currency=FUN&currencySymbol=FUN&culture=ar&gameId=124&gameTypeId=181&mode=fun&theme=Standart&showLoader=0&checkBalanceOnBet=1&v=20260904-licensed';
         window.openKazoSection?.('goldentree');
         document.querySelector('[data-open-section="goldentree"]')?.click();
         if(!document.getElementById('section-goldentree')?.classList.contains('hidden')) return;
