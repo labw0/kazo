@@ -7,56 +7,53 @@
 const SYMBOLS_SVG = {
     tree: `<img src="tree-approved.png" alt="WILD" class="approved-tree-symbol">`,
     seven: `
-        <svg viewBox="0 0 100 100">
+        <svg viewBox="0 0 100 100" class="slot-svg-symbol">
             <defs>
                 <linearGradient id="sevenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ff3b30" />
-                    <stop offset="50%" stop-color="#c01c10" />
-                    <stop offset="100%" stop-color="#7a0902" />
+                    <stop offset="0%" stop-color="#ff5a3d"/>
+                    <stop offset="45%" stop-color="#ef1d12"/>
+                    <stop offset="100%" stop-color="#8b0903"/>
+                </linearGradient>
+                <filter id="sevenGlow"><feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#5a0000" flood-opacity=".6"/></filter>
+            </defs>
+            <path d="M18 18 H82 L82 31 L50 84 H32 L62 34 H18 Z" fill="#f2b92b" stroke="#8e5a00" stroke-width="4" filter="url(#sevenGlow)"/>
+            <path d="M23 22 H76 L76 28 L45 79 H36 L66 30 H23 Z" fill="url(#sevenGrad)"/>
+            <path d="M27 25 H68" stroke="#ff9888" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+        </svg>
+    `,
+    bell: `<img src="assets/bell.png" alt="bell" class="new-slot-symbol">`,
+    watermelon: `<img src="assets/watermelon.png" alt="watermelon" class="new-slot-symbol">`,
+    grapes: `<img src="assets/grapes.png" alt="grapes" class="new-slot-symbol">`,
+    plum: `
+        <svg viewBox="0 0 100 100" class="slot-svg-symbol">
+            <defs>
+                <radialGradient id="plumGrad" cx="35%" cy="30%">
+                    <stop offset="0%" stop-color="#ba73e6"/>
+                    <stop offset="42%" stop-color="#7131ad"/>
+                    <stop offset="100%" stop-color="#35105d"/>
+                </radialGradient>
+            </defs>
+            <path d="M52 22 C60 12,73 12,80 19 C70 25,63 29,52 29 Z" fill="#56a83b"/>
+            <path d="M51 23 Q48 17 52 12" stroke="#5e3825" stroke-width="4" fill="none"/>
+            <ellipse cx="49" cy="58" rx="27" ry="29" fill="url(#plumGrad)"/>
+            <ellipse cx="40" cy="45" rx="6" ry="11" fill="#fff" opacity=".28" transform="rotate(-20 40 45)"/>
+        </svg>
+    `,
+    orange: `<img src="assets/orange.png" alt="orange" class="new-slot-symbol">`,
+    lemon: `<img src="assets/lemon.png" alt="lemon" class="new-slot-symbol">`,
+    cherry: `<img src="assets/cherry.png" alt="cherry" class="new-slot-symbol">`,
+    scatter_star: `<img src="assets/star.png" alt="scatter_star" class="new-slot-symbol">`,
+    scatter_dollar: `
+        <svg viewBox="0 0 100 100" class="slot-svg-symbol money-symbol">
+            <defs>
+                <linearGradient id="moneyGreen" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#b9f35a"/>
+                    <stop offset="48%" stop-color="#43bf43"/>
+                    <stop offset="100%" stop-color="#148638"/>
                 </linearGradient>
             </defs>
-            <!-- إطار ذهبي خارجي -->
-            <path d="M22,16 L78,16 L78,26 L48,84 L32,84 L60,28 L22,28 Z" fill="#ffd700" stroke="#b8860b" stroke-width="3"/>
-            <path d="M25,19 L75,19 L75,25 L47,81 L35,81 L61,27 L25,27 Z" fill="url(#sevenGrad)"/>
-            <circle cx="72" cy="22" r="3" fill="#fff" opacity="0.8"/>
-        </svg>
-    `,
-    bell: `<img src=\"assets/bell.png\" alt=\"bell\" class=\"new-slot-symbol\">`,
-    watermelon: `<img src=\"assets/watermelon.png\" alt=\"watermelon\" class=\"new-slot-symbol\">`,
-    grapes: `<img src=\"assets/grapes.png\" alt=\"grapes\" class=\"new-slot-symbol\">`,
-    plum: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="plumGrad" cx="40%" cy="40%">
-                    <stop offset="0%" stop-color="#ab47bc"/>
-                    <stop offset="60%" stop-color="#4a148c"/>
-                    <stop offset="100%" stop-color="#1a0033"/>
-                </radialGradient>
-            </defs>
-            <path d="M50,16 Q54,26 50,32" stroke="#5d4037" stroke-width="4" fill="none"/>
-            <path d="M50,22 Q65,15 62,28 Z" fill="#4caf50"/>
-            <ellipse cx="50" cy="58" rx="26" ry="28" fill="url(#plumGrad)"/>
-            <ellipse cx="42" cy="46" rx="5" ry="10" fill="#fff" opacity="0.3" transform="rotate(-20 42 46)"/>
-        </svg>
-    `,
-    orange: `<img src=\"assets/orange.png\" alt=\"orange\" class=\"new-slot-symbol\">`,
-    lemon: `<img src=\"assets/lemon.png\" alt=\"lemon\" class=\"new-slot-symbol\">`,
-    cherry: `<img src=\"assets/cherry.png\" alt=\"cherry\" class=\"new-slot-symbol\">`,
-    scatter_star: `<img src=\"assets/star.png\" alt=\"scatter_star\" class=\"new-slot-symbol\">`,
-    scatter_dollar: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="coinGrad" cx="40%" cy="40%">
-                    <stop offset="0%" stop-color="#fff3a1"/>
-                    <stop offset="60%" stop-color="#f5b000"/>
-                    <stop offset="100%" stop-color="#7a4b00"/>
-                </radialGradient>
-            </defs>
-            <circle cx="50" cy="50" r="38" fill="url(#coinGrad)" stroke="#ffd700" stroke-width="3"/>
-            <circle cx="50" cy="50" r="31" fill="none" stroke="#b8860b" stroke-dasharray="3,3" stroke-width="2"/>
-            <text x="50" y="66" font-family="'Cinzel', serif" font-size="44" font-weight="900" fill="#422500" text-anchor="middle">$</text>
-            <text x="49" y="65" font-family="'Cinzel', serif" font-size="44" font-weight="900" fill="#ffd700" text-anchor="middle">$</text>
-            <text x="50" y="98" font-family="'Cinzel', serif" font-weight="900" font-size="8" fill="#ffd700" text-anchor="middle">SCATTER</text>
+            <text x="50" y="73" font-family="Arial Black,Arial,sans-serif" font-size="72" font-weight="900" fill="#f2bd32" stroke="#8e5c00" stroke-width="6" text-anchor="middle">$</text>
+            <text x="50" y="70" font-family="Arial Black,Arial,sans-serif" font-size="72" font-weight="900" fill="url(#moneyGreen)" stroke="#d6a72b" stroke-width="2" text-anchor="middle">$</text>
         </svg>
     `
 };
@@ -629,7 +626,7 @@ class GoldenTreeGame {
 
             this.sound.playWin();
             this.highlightWinningSymbols(winningLines);
-            this.drawPaylines(winningLines);
+            this.drawWinningLightning(winningLines);
 
             // احتفال الفوز الكبير (Big Win) إذا تجاوز 15 ضعف الرهان
             if (totalWin >= totalBet * 15) {
@@ -654,77 +651,78 @@ class GoldenTreeGame {
         });
     }
 
-    // تأثير الفوز: برق ذهبي متحرك يربط الرموز الرابحة بدل خطوط الدفع التقليدية
-    drawPaylines(winningLines) {
+    // برق ذهبي متحرك يربط الرموز الرابحة بدلاً من خطوط الدفع التقليدية
+    drawWinningLightning(winningLines) {
         const svg = this.dom.paylinesSvg;
         svg.innerHTML = '';
+        const rect = this.dom.reelsContainer.getBoundingClientRect();
+        svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
 
-        const containerRect = this.dom.reelsContainer.getBoundingClientRect();
-        svg.setAttribute('viewBox', `0 0 ${containerRect.width} ${containerRect.height}`);
-        svg.classList.add('gold-lightning-active');
-
-        // فلتر توهج ذهبي قوي
         const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
         defs.innerHTML = `
-            <filter id="kazoGoldGlow" x="-60%" y="-60%" width="220%" height="220%">
-                <feGaussianBlur stdDeviation="4" result="blur"/>
-                <feFlood flood-color="#ffd21a" flood-opacity="1" result="gold"/>
-                <feComposite in="gold" in2="blur" operator="in" result="glow"/>
-                <feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>`;
+          <filter id="kgtLightningGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <linearGradient id="kgtLightningGold" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fff7b2"/><stop offset="45%" stop-color="#ffd22e"/><stop offset="100%" stop-color="#ff9d00"/>
+          </linearGradient>`;
         svg.appendChild(defs);
 
-        winningLines.forEach((win, i) => {
-            if (!win.pattern) return;
-            const pts = [];
-            for (let r = 0; r < win.matchCount; r++) {
-                const row = win.pattern[r];
-                const reelEl = document.getElementById(`reel-${r}`);
-                const cell = reelEl.querySelectorAll('.symbol-cell')[row];
-                if (!cell) continue;
-                const cr = cell.getBoundingClientRect();
-                pts.push({x: cr.left-containerRect.left+cr.width/2, y: cr.top-containerRect.top+cr.height/2});
-                cell.classList.add('lightning-winner');
-            }
+        const addBolt = (pts, delay=0) => {
             if (pts.length < 2) return;
-
-            // نقاط متعرجة صغيرة بين مراكز الرموز لتعطي شكل البرق الطبيعي
-            const lightning = [];
-            pts.forEach((a, idx) => {
-                if (idx === 0) { lightning.push(`${a.x},${a.y}`); return; }
-                const b = pts[idx-1], steps = 5;
-                for (let k=1; k<=steps; k++) {
-                    const t=k/steps;
-                    let x=b.x+(a.x-b.x)*t, y=b.y+(a.y-b.y)*t;
-                    if (k<steps) {
-                        const jitter=((k+i)%2 ? 1 : -1) * (5 + ((k*7+i*3)%8));
-                        y += jitter;
-                    }
-                    lightning.push(`${x},${y}`);
+            // generate small zig-zag offsets so the path looks like electric lightning
+            const jagged=[];
+            for (let i=0;i<pts.length-1;i++) {
+                const a=pts[i], b=pts[i+1];
+                jagged.push(a);
+                const segments=5;
+                for(let j=1;j<segments;j++){
+                    const t=j/segments;
+                    const x=a.x+(b.x-a.x)*t;
+                    const y=a.y+(b.y-a.y)*t;
+                    const amp=(j%2?1:-1)*(4+Math.random()*7);
+                    const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+                    jagged.push({x:x+(-dy/len)*amp, y:y+(dx/len)*amp});
                 }
+            }
+            jagged.push(pts[pts.length-1]);
+            const d=jagged.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+            const glow=document.createElementNS('http://www.w3.org/2000/svg','path');
+            glow.setAttribute('d',d); glow.setAttribute('fill','none'); glow.setAttribute('stroke','#ffb000'); glow.setAttribute('stroke-width','10'); glow.setAttribute('opacity','.32'); glow.setAttribute('filter','url(#kgtLightningGlow)');
+            const core=document.createElementNS('http://www.w3.org/2000/svg','path');
+            core.setAttribute('d',d); core.setAttribute('fill','none'); core.setAttribute('stroke','url(#kgtLightningGold)'); core.setAttribute('stroke-width','3.6'); core.setAttribute('stroke-linecap','round'); core.setAttribute('stroke-linejoin','round'); core.setAttribute('filter','url(#kgtLightningGlow)');
+            core.style.strokeDasharray='18 10'; core.style.animation=`kgtLightningFlow .42s linear ${delay}ms infinite, kgtLightningPulse .8s ease-in-out ${delay}ms infinite alternate`;
+            svg.appendChild(glow); svg.appendChild(core);
+
+            pts.forEach((p,idx)=>{
+                const spark=document.createElementNS('http://www.w3.org/2000/svg','circle');
+                spark.setAttribute('cx',p.x); spark.setAttribute('cy',p.y); spark.setAttribute('r','5'); spark.setAttribute('fill','#fff6a0'); spark.setAttribute('filter','url(#kgtLightningGlow)');
+                spark.style.animation=`kgtSparkPulse .55s ease-in-out ${delay+idx*90}ms infinite alternate`;
+                svg.appendChild(spark);
             });
+        };
 
-            const glow = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-            glow.setAttribute('points', lightning.join(' '));
-            glow.setAttribute('class', 'gold-lightning gold-lightning-glow');
-            glow.setAttribute('filter', 'url(#kazoGoldGlow)');
-            svg.appendChild(glow);
-
-            const core = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-            core.setAttribute('points', lightning.join(' '));
-            core.setAttribute('class', 'gold-lightning gold-lightning-core');
-            svg.appendChild(core);
-
-            const peg = document.querySelector(`.payline-pegs span[data-line="${win.lineIndex + 1}"]`);
-            if (peg) peg.classList.add('active');
+        winningLines.forEach((win,i)=>{
+            if (!win.pattern) return;
+            const pts=[];
+            for(let r=0;r<win.matchCount;r++){
+                const row=win.pattern[r];
+                const cell=document.getElementById(`reel-${r}`)?.querySelectorAll('.symbol-cell')[row];
+                if(!cell) continue;
+                const cr=cell.getBoundingClientRect();
+                pts.push({x:cr.left-rect.left+cr.width/2, y:cr.top-rect.top+cr.height/2});
+            }
+            addBolt(pts,i*110);
+            const peg=document.querySelector(`.payline-pegs span[data-line="${win.lineIndex+1}"]`);
+            peg?.classList.add('active');
         });
     }
 
     clearPaylines() {
         this.dom.paylinesSvg.innerHTML = '';
-        this.dom.paylinesSvg.classList.remove('gold-lightning-active');
         document.querySelectorAll('.symbol-cell').forEach(c => {
-            c.classList.remove('highlight', 'expanding-wild-symbol', 'lightning-winner');
+            c.classList.remove('highlight', 'expanding-wild-symbol');
         });
         document.querySelectorAll('.payline-pegs span').forEach(p => p.classList.remove('active'));
     }
