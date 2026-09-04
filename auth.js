@@ -6,6 +6,7 @@
     const $ = (id) => document.getElementById(id);
     let sb = null;
     let pendingSignupEmail = '';
+    let recoveryMode = false;
 
     const configReady = () => {
         const url = window.KAZO_SUPABASE_URL || '';
@@ -238,7 +239,13 @@
         }
 
         sb = window.supabase.createClient(window.KAZO_SUPABASE_URL, window.KAZO_SUPABASE_PUBLISHABLE_KEY, {
-            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+                storage: window.localStorage,
+                storageKey: 'kazo-auth-session'
+            }
         });
         window.kazoSupabase = sb;
 
