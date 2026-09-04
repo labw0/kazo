@@ -79,7 +79,7 @@ class App {
         // تشغيل الألعاب
         window.crashGame = new CrashGame();
         window.appleGame = new AppleGame();
-        window.goldenTreeGame = new GoldenTreeGame();
+        window.goldenTreeGame = window.GoldenTreeGame ? new GoldenTreeGame() : null;
     }
 
     bindNavigation() {
