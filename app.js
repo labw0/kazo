@@ -680,7 +680,7 @@ document.addEventListener('kazo:auth-ready', () => {
     document.querySelectorAll('[data-close-golden-preview]').forEach(x=>x.addEventListener('click', closeModal));
     demoBtn?.addEventListener('click', () => {
         closeModal();
-        if(gameFrame) gameFrame.src='games/golden-tree/index.html?v=20260904-local';
+        if(gameFrame) gameFrame.src='games/golden-tree/index.html?mode=demo&v=20260904-final';
         window.openKazoSection?.('goldentree');
         document.querySelector('[data-open-section="goldentree"]')?.click();
         if(!document.getElementById('section-goldentree')?.classList.contains('hidden')) return;
