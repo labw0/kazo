@@ -785,3 +785,5 @@ body {
 .logo-icon img { width: 64px; height: 64px; object-fit: contain; border-radius: 12px; display:block; }
 .feature-icon img { width: 72px; height: 72px; object-fit: contain; border-radius: 12px; display:block; }
 .symbol-cell.expanding-wild-symbol .approved-tree-symbol { width:100%; height:100%; object-fit:contain; }
+/* Kazo approved symbol artwork update */
+.new-slot-symbol{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18));}

@@ -11,16 +11,16 @@ class GoldenTreeGame {
         this.freeSpins = 0;
         this.bonusMultiplier = 1;
         this.symbols = [
-            { id:'orange', img:'assets/kgt/orange.svg', w:17, pay:[0,0,2,5,12] },
+            { id:'orange', img:'assets/kgt/orange_new.png', w:17, pay:[0,0,2,5,12] },
             { id:'plum', img:'assets/kgt/plum.svg', w:16, pay:[0,0,2,6,14] },
-            { id:'grape', img:'assets/kgt/grape.svg', w:16, pay:[0,0,2,6,14] },
-            { id:'cherry', img:'assets/kgt/cherry.svg', w:16, pay:[0,0,2,5,12] },
-            { id:'lemon', img:'assets/kgt/lemon.svg', w:14, pay:[0,0,3,7,16] },
-            { id:'melon', img:'assets/kgt/melon.svg', w:12, pay:[0,0,3,8,18] },
-            { id:'bell', img:'assets/kgt/bell.svg', w:9, pay:[0,0,5,12,30] },
+            { id:'grape', img:'assets/kgt/grape_new.png', w:16, pay:[0,0,2,6,14] },
+            { id:'cherry', img:'assets/kgt/cherry_new.png', w:16, pay:[0,0,2,5,12] },
+            { id:'lemon', img:'assets/kgt/lemon_new.png', w:14, pay:[0,0,3,7,16] },
+            { id:'melon', img:'assets/kgt/melon_new.png', w:12, pay:[0,0,3,8,18] },
+            { id:'bell', img:'assets/kgt/bell_new.png', w:9, pay:[0,0,5,12,30] },
             { id:'seven', img:'assets/kgt/seven.svg', w:6, pay:[0,0,8,22,55] },
-            { id:'wild', img:'assets/kgt/star.svg', w:5, pay:[0,0,10,30,80] },
-            { id:'tree', img:'assets/kgt/tree.svg', w:5, pay:[0,0,6,18,50] }
+            { id:'wild', img:'assets/kgt/star_new.png', w:5, pay:[0,0,10,30,80] },
+            { id:'tree', img:'assets/kgt/tree_new.png', w:5, pay:[0,0,6,18,50] }
         ];
         this.paylines = [
             [1,1,1,1,1], [0,0,0,0,0], [2,2,2,2,2],

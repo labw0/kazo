@@ -21,61 +21,9 @@ const SYMBOLS_SVG = {
             <circle cx="72" cy="22" r="3" fill="#fff" opacity="0.8"/>
         </svg>
     `,
-    bell: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <linearGradient id="bellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#fff099" />
-                    <stop offset="50%" stop-color="#f5b000" />
-                    <stop offset="100%" stop-color="#8a5700" />
-                </linearGradient>
-            </defs>
-            <path d="M50,15 C42,15 36,25 34,42 C30,46 25,62 20,70 L80,70 C75,62 70,46 66,42 C64,25 58,15 50,15 Z" fill="url(#bellGrad)" stroke="#523200" stroke-width="2"/>
-            <rect x="18" y="68" width="64" height="6" rx="3" fill="#ffd700" stroke="#7a4b00"/>
-            <circle cx="50" cy="79" r="6" fill="#f5b000" stroke="#523200"/>
-            <ellipse cx="44" cy="35" rx="4" ry="12" fill="#fff" opacity="0.4" transform="rotate(-15 44 35)"/>
-        </svg>
-    `,
-    watermelon: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <linearGradient id="melonRed" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#ff3b5c"/>
-                    <stop offset="100%" stop-color="#b80927"/>
-                </linearGradient>
-            </defs>
-            <path d="M15,40 C15,75 40,85 50,85 C60,85 85,75 85,40 Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
-            <path d="M18,41 C18,72 40,82 50,82 C60,82 82,72 82,41 Z" fill="#e8f5e9"/>
-            <path d="M21,42 C21,69 42,78 50,78 C58,78 79,69 79,42 Z" fill="url(#melonRed)"/>
-            <!-- بذور البطيخ -->
-            <ellipse cx="36" cy="54" rx="2" ry="3.5" fill="#212121" transform="rotate(15 36 54)"/>
-            <ellipse cx="50" cy="62" rx="2" ry="3.5" fill="#212121"/>
-            <ellipse cx="64" cy="54" rx="2" ry="3.5" fill="#212121" transform="rotate(-15 64 54)"/>
-        </svg>
-    `,
-    grapes: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="grapeGrad" cx="35%" cy="35%">
-                    <stop offset="0%" stop-color="#ba68c8"/>
-                    <stop offset="70%" stop-color="#6a1b9a"/>
-                    <stop offset="100%" stop-color="#38006b"/>
-                </radialGradient>
-            </defs>
-            <!-- غصن العنب -->
-            <path d="M50,15 Q55,25 48,32" stroke="#8d6e63" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <path d="M48,22 Q60,18 64,25 Q56,28 48,24" fill="#66bb6a"/>
-            <!-- حبات العنب -->
-            <circle cx="40" cy="38" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="58" cy="38" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="32" cy="52" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="50" cy="52" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="68" cy="52" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="41" cy="66" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="59" cy="66" r="9" fill="url(#grapeGrad)"/>
-            <circle cx="50" cy="78" r="8" fill="url(#grapeGrad)"/>
-        </svg>
-    `,
+    bell: `<img src=\"assets/bell.png\" alt=\"bell\" class=\"new-slot-symbol\">`,
+    watermelon: `<img src=\"assets/watermelon.png\" alt=\"watermelon\" class=\"new-slot-symbol\">`,
+    grapes: `<img src=\"assets/grapes.png\" alt=\"grapes\" class=\"new-slot-symbol\">`,
     plum: `
         <svg viewBox="0 0 100 100">
             <defs>
@@ -91,64 +39,10 @@ const SYMBOLS_SVG = {
             <ellipse cx="42" cy="46" rx="5" ry="10" fill="#fff" opacity="0.3" transform="rotate(-20 42 46)"/>
         </svg>
     `,
-    orange: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="orangeGrad" cx="35%" cy="35%">
-                    <stop offset="0%" stop-color="#ffb74d"/>
-                    <stop offset="70%" stop-color="#f57c00"/>
-                    <stop offset="100%" stop-color="#b35400"/>
-                </radialGradient>
-            </defs>
-            <path d="M50,16 Q52,24 50,28" stroke="#5d4037" stroke-width="3" fill="none"/>
-            <circle cx="50" cy="56" r="28" fill="url(#orangeGrad)"/>
-            <ellipse cx="40" cy="45" rx="5" ry="9" fill="#fff" opacity="0.3" transform="rotate(-25 40 45)"/>
-        </svg>
-    `,
-    lemon: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="lemonGrad" cx="40%" cy="40%">
-                    <stop offset="0%" stop-color="#fff59d"/>
-                    <stop offset="70%" stop-color="#fbc02d"/>
-                    <stop offset="100%" stop-color="#f57f17"/>
-                </radialGradient>
-            </defs>
-            <path d="M30,35 C40,20 65,22 75,35 C88,48 88,68 75,78 C62,88 38,88 25,75 C14,64 16,46 30,35 Z" fill="url(#lemonGrad)"/>
-            <ellipse cx="45" cy="45" rx="6" ry="12" fill="#fff" opacity="0.3" transform="rotate(-30 45 45)"/>
-        </svg>
-    `,
-    cherry: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="cherryGrad" cx="35%" cy="35%">
-                    <stop offset="0%" stop-color="#ff5252"/>
-                    <stop offset="70%" stop-color="#d50000"/>
-                    <stop offset="100%" stop-color="#5b0000"/>
-                </radialGradient>
-            </defs>
-            <path d="M52,18 C50,35 34,50 34,60 M52,18 C54,35 68,52 68,64" stroke="#4e342e" stroke-width="3" fill="none"/>
-            <path d="M52,20 Q65,15 62,26 Z" fill="#66bb6a"/>
-            <circle cx="34" cy="64" r="14" fill="url(#cherryGrad)"/>
-            <circle cx="68" cy="68" r="14" fill="url(#cherryGrad)"/>
-            <circle cx="30" cy="60" r="3.5" fill="#fff" opacity="0.6"/>
-            <circle cx="64" cy="64" r="3.5" fill="#fff" opacity="0.6"/>
-        </svg>
-    `,
-    scatter_star: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="40%" stop-color="#ffd700"/>
-                    <stop offset="100%" stop-color="#ff9100"/>
-                </linearGradient>
-            </defs>
-            <polygon points="50,10 63,38 93,40 70,60 77,90 50,74 23,90 30,60 7,40 37,38" fill="url(#starGrad)" stroke="#b8860b" stroke-width="3"/>
-            <polygon points="50,22 59,41 79,42 63,55 68,75 50,64 32,75 37,55 21,42 41,41" fill="#fff" opacity="0.4"/>
-            <text x="50" y="98" font-family="'Cinzel', serif" font-weight="900" font-size="8" fill="#ffd700" text-anchor="middle">SCATTER</text>
-        </svg>
-    `,
+    orange: `<img src=\"assets/orange.png\" alt=\"orange\" class=\"new-slot-symbol\">`,
+    lemon: `<img src=\"assets/lemon.png\" alt=\"lemon\" class=\"new-slot-symbol\">`,
+    cherry: `<img src=\"assets/cherry.png\" alt=\"cherry\" class=\"new-slot-symbol\">`,
+    scatter_star: `<img src=\"assets/star.png\" alt=\"scatter_star\" class=\"new-slot-symbol\">`,
     scatter_dollar: `
         <svg viewBox="0 0 100 100">
             <defs>
