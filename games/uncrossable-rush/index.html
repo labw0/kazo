@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الدجاجة Uncrossable Rush | iChancy Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="brand-section">
+                <span class="brand-logo">🐔</span>
+                <div>
+                    <h1 class="brand-title" data-i18n="title">لعبة الدجاجة - UNCROSSABLE RUSH</h1>
+                    <p class="brand-subtitle" data-i18n="subtitle">النسخة الأصلية من iChancy و Evoplay</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="balance-card">
+                    <span class="balance-label" data-i18n="balance">الرصيد:</span>
+                    <span class="balance-amount" id="balanceDisplay">$1,000.00</span>
+                    <button class="btn-refill" id="btnRefill" data-i18n="refill">تعبئة</button>
+                </div>
+                <div class="header-tools">
+                    <button class="tool-btn" id="btnToggleMusic" title="الموسيقى">🎵</button>
+                    <button class="tool-btn" id="btnToggleSfx" title="المؤثرات الصوتية">🔊</button>
+                    <button class="tool-btn" id="btnLang" title="اللغة">EN</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- History Bar -->
+        <div class="history-container">
+            <span class="history-label" data-i18n="recentRounds">سجل الجولات الأخيرة:</span>
+            <div class="history-pills" id="historyBar">
+                <!-- History pills dynamically rendered -->
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <main class="main-game-area">
+            <!-- Left Side: Multiplier Ladder -->
+            <aside class="ladder-panel">
+                <div class="ladder-header" data-i18n="multiplierLadder">سلم المضاعفات (24 مسار)</div>
+                <div class="ladder-list" id="multiplierLadderList">
+                    <!-- Multipliers dynamically populated -->
+                </div>
+            </aside>
+
+            <!-- Center: Canvas Viewport -->
+            <div class="canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                <div class="status-banner info" id="statusMessage" data-i18n="waitingBet">
+                    ضع رهانك واضغط GO لبدء العبور
+                </div>
+            </div>
+
+            <!-- Right: Controls & Betting Panel -->
+            <aside class="controls-panel">
+                <!-- Difficulty Selection -->
+                <div>
+                    <div class="panel-section-title" data-i18n="difficulty">مستوى الصعوبة:</div>
+                    <div class="difficulty-grid">
+                        <button class="diff-btn" data-diff="easy" data-i18n="easy">سهل</button>
+                        <button class="diff-btn active" data-diff="medium" data-i18n="medium">متوسط</button>
+                        <button class="diff-btn" data-diff="hard" data-i18n="hard">صعب</button>
+                        <button class="diff-btn" data-diff="hardcore" data-i18n="hardcore">هاردكور ⚡</button>
+                    </div>
+                </div>
+
+                <!-- Bet Amount Control -->
+                <div>
+                    <div class="panel-section-title" data-i18n="bet">قيمة الرهان:</div>
+                    <div class="bet-input-box">
+                        <button class="bet-adjust-btn" id="btnBetMinus">−</button>
+                        <input type="number" class="bet-input" id="betAmountInput" value="10.00" min="1" max="500" step="1">
+                        <button class="bet-adjust-btn" id="btnBetPlus">+</button>
+                    </div>
+                    <!-- Modifiers -->
+                    <div class="modifiers-row">
+                        <button class="modifier-btn" id="btnBetHalf">½</button>
+                        <button class="modifier-btn" id="btnBetDouble">2X</button>
+                        <button class="modifier-btn" id="btnBetMin" data-i18n="min">أدنى</button>
+                        <button class="modifier-btn" id="btnBetMax" data-i18n="max">أقصى</button>
+                    </div>
+                    <!-- Quick Chips -->
+                    <div class="chips-row">
+                        <button class="chip-btn" data-val="5">$5</button>
+                        <button class="chip-btn" data-val="10">$10</button>
+                        <button class="chip-btn" data-val="25">$25</button>
+                        <button class="chip-btn" data-val="50">$50</button>
+                        <button class="chip-btn" data-val="100">$100</button>
+                    </div>
+                </div>
+
+                <!-- Big Action Buttons -->
+                <div class="action-buttons-group">
+                    <button class="btn-go" id="btnGo">
+                        <span data-i18n="startGo">ابدأ الرهان واعبر GO</span>
+                    </button>
+                    <button class="btn-cashout" id="btnCashOut" disabled>
+                        <span data-i18n="cashOut">سحب الأرباح CASH OUT</span>
+                        <span class="cashout-val" id="cashoutValue"></span>
+                    </button>
+                </div>
+
+                <!-- Shortcuts Hints -->
+                <div class="keyboard-hints">
+                    اختصارات لوحة المفاتيح:<br>
+                    اضغط <kbd>Space</kbd> أو <kbd>↑</kbd> للتقدم إلى الأمام<br>
+                    اضغط <kbd>C</kbd> لسحب الأرباح
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Scripts in logical dependency order -->
+    <script src="js/audio.js"></script>
+    <script src="js/chicken.js"></script>
+    <script src="js/barrier.js"></script>
+    <script src="js/cars.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
