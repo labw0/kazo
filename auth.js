@@ -149,7 +149,7 @@
             pendingSignupEmail = email;
             $('signup-code-wrap').classList.remove('hidden');
             $('signup-create').classList.remove('hidden');
-            message('تم إرسال رمز التحقق إلى بريدك. أدخل الرمز المكوّن من 6 أرقام ثم اضغط إنشاء الحساب.', 'success');
+            message('تم إرسال رمز التحقق إلى بريدك. أدخل الرمز كاملًا كما وصلك ثم اضغط إنشاء الحساب.', 'success');
         } catch (err) {
             message(err.message, 'error');
         } finally {
@@ -161,7 +161,7 @@
         e.preventDefault();
         const email = pendingSignupEmail || $('signup-email').value.trim().toLowerCase();
         const token = $('signup-code').value.trim();
-        if (!/^\d{6}$/.test(token)) return message('أدخل رمز التحقق المكوّن من 6 أرقام.', 'warning');
+        if (!/^\d{6,8}$/.test(token)) return message('أدخل رمز التحقق كاملًا كما وصلك في البريد (من 6 إلى 8 أرقام).', 'warning');
         const btn = $('signup-create');
         setBusy(btn, true, 'جاري إنشاء الحساب...');
         try {
@@ -171,7 +171,10 @@
             message('تم إنشاء الحساب وتأكيد البريد بنجاح.', 'success');
             await unlock(data.session);
         } catch (err) {
-            message(err.message, 'error');
+            const authError = err.message === 'Token has expired or is invalid'
+                ? 'رمز التحقق غير صحيح أو انتهت صلاحيته. اطلب رمزًا جديدًا وأدخله كاملًا.'
+                : err.message;
+            message(authError, 'error');
         } finally {
             setBusy(btn, false);
         }
