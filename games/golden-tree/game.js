@@ -654,51 +654,77 @@ class GoldenTreeGame {
         });
     }
 
-    // رسم مسارات خطوط الفوز على قناع الـ SVG
+    // تأثير الفوز: برق ذهبي متحرك يربط الرموز الرابحة بدل خطوط الدفع التقليدية
     drawPaylines(winningLines) {
         const svg = this.dom.paylinesSvg;
         svg.innerHTML = '';
 
         const containerRect = this.dom.reelsContainer.getBoundingClientRect();
         svg.setAttribute('viewBox', `0 0 ${containerRect.width} ${containerRect.height}`);
+        svg.classList.add('gold-lightning-active');
+
+        // فلتر توهج ذهبي قوي
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        defs.innerHTML = `
+            <filter id="kazoGoldGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feFlood flood-color="#ffd21a" flood-opacity="1" result="gold"/>
+                <feComposite in="gold" in2="blur" operator="in" result="glow"/>
+                <feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>`;
+        svg.appendChild(defs);
 
         winningLines.forEach((win, i) => {
             if (!win.pattern) return;
-            const points = [];
+            const pts = [];
             for (let r = 0; r < win.matchCount; r++) {
                 const row = win.pattern[r];
                 const reelEl = document.getElementById(`reel-${r}`);
                 const cell = reelEl.querySelectorAll('.symbol-cell')[row];
-                if (cell) {
-                    const cellRect = cell.getBoundingClientRect();
-                    const x = cellRect.left - containerRect.left + cellRect.width / 2;
-                    const y = cellRect.top - containerRect.top + cellRect.height / 2;
-                    points.push(`${x},${y}`);
+                if (!cell) continue;
+                const cr = cell.getBoundingClientRect();
+                pts.push({x: cr.left-containerRect.left+cr.width/2, y: cr.top-containerRect.top+cr.height/2});
+                cell.classList.add('lightning-winner');
+            }
+            if (pts.length < 2) return;
+
+            // نقاط متعرجة صغيرة بين مراكز الرموز لتعطي شكل البرق الطبيعي
+            const lightning = [];
+            pts.forEach((a, idx) => {
+                if (idx === 0) { lightning.push(`${a.x},${a.y}`); return; }
+                const b = pts[idx-1], steps = 5;
+                for (let k=1; k<=steps; k++) {
+                    const t=k/steps;
+                    let x=b.x+(a.x-b.x)*t, y=b.y+(a.y-b.y)*t;
+                    if (k<steps) {
+                        const jitter=((k+i)%2 ? 1 : -1) * (5 + ((k*7+i*3)%8));
+                        y += jitter;
+                    }
+                    lightning.push(`${x},${y}`);
                 }
-            }
+            });
 
-            if (points.length >= 2) {
-                const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-                polyline.setAttribute('points', points.join(' '));
-                polyline.setAttribute('stroke', PAYLINE_COLORS[win.lineIndex % PAYLINE_COLORS.length]);
-                polyline.setAttribute('stroke-width', '5');
-                polyline.setAttribute('fill', 'none');
-                polyline.setAttribute('stroke-linecap', 'round');
-                polyline.setAttribute('stroke-linejoin', 'round');
-                polyline.style.filter = 'drop-shadow(0 0 8px gold)';
-                svg.appendChild(polyline);
+            const glow = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+            glow.setAttribute('points', lightning.join(' '));
+            glow.setAttribute('class', 'gold-lightning gold-lightning-glow');
+            glow.setAttribute('filter', 'url(#kazoGoldGlow)');
+            svg.appendChild(glow);
 
-                // إضاءة أرقام خطوط الدفع الجانبية
-                const peg = document.querySelector(`.payline-pegs span[data-line="${win.lineIndex + 1}"]`);
-                if (peg) peg.classList.add('active');
-            }
+            const core = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+            core.setAttribute('points', lightning.join(' '));
+            core.setAttribute('class', 'gold-lightning gold-lightning-core');
+            svg.appendChild(core);
+
+            const peg = document.querySelector(`.payline-pegs span[data-line="${win.lineIndex + 1}"]`);
+            if (peg) peg.classList.add('active');
         });
     }
 
     clearPaylines() {
         this.dom.paylinesSvg.innerHTML = '';
+        this.dom.paylinesSvg.classList.remove('gold-lightning-active');
         document.querySelectorAll('.symbol-cell').forEach(c => {
-            c.classList.remove('highlight', 'expanding-wild-symbol');
+            c.classList.remove('highlight', 'expanding-wild-symbol', 'lightning-winner');
         });
         document.querySelectorAll('.payline-pegs span').forEach(p => p.classList.remove('active'));
     }

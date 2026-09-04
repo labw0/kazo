@@ -811,3 +811,33 @@ body {
   .symbol-cell .new-slot-symbol{width:66%!important;height:66%!important;max-width:66%!important;max-height:66%!important}
   .symbol-cell .approved-tree-symbol{width:74%!important;height:74%!important;max-width:74%!important;max-height:74%!important}
 }
+
+/* === KAZO Golden Tree: animated golden lightning win effect === */
+.gold-lightning {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+.gold-lightning-glow {
+    stroke: #ffb300;
+    stroke-width: 9;
+    opacity: .78;
+    stroke-dasharray: 18 10;
+    animation: kazoLightningFlow .48s linear infinite, kazoLightningPulse .85s ease-in-out infinite alternate;
+}
+.gold-lightning-core {
+    stroke: #fff7a8;
+    stroke-width: 2.8;
+    stroke-dasharray: 7 5;
+    filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 7px #ffd000);
+    animation: kazoLightningFlow .28s linear infinite;
+}
+.symbol-cell.lightning-winner svg,
+.symbol-cell.lightning-winner img {
+    animation: kazoWinnerPulse .62s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 5px #fff7a8) drop-shadow(0 0 13px #ffc400) !important;
+}
+@keyframes kazoLightningFlow { to { stroke-dashoffset: -56; } }
+@keyframes kazoLightningPulse { from { opacity:.52; } to { opacity:1; } }
+@keyframes kazoWinnerPulse { from { transform:scale(1); } to { transform:scale(1.08); } }
