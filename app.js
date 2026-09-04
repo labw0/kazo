@@ -640,3 +640,32 @@ document.addEventListener('kazo:auth-ready', () => {
     kazoAppStarted = true;
     window.app = new App();
 });
+
+// ===== Kazo Golden Tree preview / demo launch =====
+(function(){
+    const modal = document.getElementById('golden-tree-preview-modal');
+    const openBtn = document.getElementById('open-golden-tree-preview');
+    const demoBtn = document.getElementById('kgt-play-demo');
+    const realBtn = document.getElementById('kgt-play-real');
+    const gameFrame = document.querySelector('#section-goldentree iframe');
+    const open = () => { if(!modal) return; modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+    const close = () => { if(!modal) return; modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+    openBtn?.addEventListener('click', open);
+    modal?.querySelectorAll('[data-close-golden-preview]').forEach(el => el.addEventListener('click', close));
+    demoBtn?.addEventListener('click', () => {
+        if (gameFrame) gameFrame.src = 'games/golden-tree/index.html?mode=demo';
+        close();
+        document.querySelector('[data-open-section="goldentree"]')?.click();
+        window.app?.switchTab?.('goldentree');
+        if (!document.getElementById('section-goldentree')?.classList.contains('hidden')) return;
+        document.getElementById('section-goldentree')?.classList.remove('hidden');
+        document.getElementById('section-casino')?.classList.add('hidden');
+    });
+    realBtn?.addEventListener('click', () => {
+        const t = document.createElement('div');
+        t.className='kgt-preview-toast';
+        t.textContent='اللعب برصيد مالي حقيقي غير متاح في هذه النسخة.';
+        document.body.appendChild(t);
+        setTimeout(()=>t.remove(),2600);
+    });
+})();
