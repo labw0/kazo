@@ -11,15 +11,16 @@ class GoldenTreeGame {
         this.freeSpins = 0;
         this.bonusMultiplier = 1;
         this.symbols = [
-            { id:'orange', icon:'🍊', w:17, pay:[0,0,2,5,12] },
-            { id:'grape', icon:'🍇', w:16, pay:[0,0,2,6,14] },
-            { id:'cherry', icon:'🍒', w:16, pay:[0,0,2,5,12] },
-            { id:'lemon', icon:'🍋', w:14, pay:[0,0,3,7,16] },
-            { id:'melon', icon:'🍉', w:12, pay:[0,0,3,8,18] },
-            { id:'bell', icon:'🔔', w:9, pay:[0,0,5,12,30] },
-            { id:'seven', icon:'7️⃣', w:6, pay:[0,0,8,22,55] },
-            { id:'wild', icon:'⭐', w:5, pay:[0,0,10,30,80] },
-            { id:'tree', icon:'🌳', w:5, pay:[0,0,6,18,50] }
+            { id:'orange', img:'assets/kgt/orange.svg', w:17, pay:[0,0,2,5,12] },
+            { id:'plum', img:'assets/kgt/plum.svg', w:16, pay:[0,0,2,6,14] },
+            { id:'grape', img:'assets/kgt/grape.svg', w:16, pay:[0,0,2,6,14] },
+            { id:'cherry', img:'assets/kgt/cherry.svg', w:16, pay:[0,0,2,5,12] },
+            { id:'lemon', img:'assets/kgt/lemon.svg', w:14, pay:[0,0,3,7,16] },
+            { id:'melon', img:'assets/kgt/melon.svg', w:12, pay:[0,0,3,8,18] },
+            { id:'bell', img:'assets/kgt/bell.svg', w:9, pay:[0,0,5,12,30] },
+            { id:'seven', img:'assets/kgt/seven.svg', w:6, pay:[0,0,8,22,55] },
+            { id:'wild', img:'assets/kgt/star.svg', w:5, pay:[0,0,10,30,80] },
+            { id:'tree', img:'assets/kgt/tree.svg', w:5, pay:[0,0,6,18,50] }
         ];
         this.paylines = [
             [1,1,1,1,1], [0,0,0,0,0], [2,2,2,2,2],
@@ -90,19 +91,49 @@ class GoldenTreeGame {
         this.refresh();
     }
 
+    symbolCell(sym, finalIndex=null) {
+        const cell = document.createElement('div');
+        cell.className = `kgt-symbol symbol-${sym.id}`;
+        cell.dataset.symbol = sym.id;
+        if (finalIndex !== null) cell.dataset.finalIndex = finalIndex;
+        const img = document.createElement('img');
+        img.src = sym.img;
+        img.alt = sym.id;
+        img.draggable = false;
+        cell.appendChild(img);
+        return cell;
+    }
+
     renderGrid(grid, animate=true) {
         const reels = [...document.querySelectorAll('#kgt-reels .kgt-reel')];
         reels.forEach((reel, c) => {
             reel.innerHTML = '';
-            if (animate) reel.classList.add('spinning');
-            grid[c].forEach(sym => {
-                const cell = document.createElement('div');
-                cell.className = `kgt-symbol symbol-${sym.id}`;
-                cell.dataset.symbol = sym.id;
-                cell.textContent = sym.icon;
-                reel.appendChild(cell);
-            });
+            reel.classList.toggle('spinning', animate);
+            const track = document.createElement('div');
+            track.className = 'kgt-reel-track';
+
+            // الرموز النهائية أولاً ثم رموز مؤقتة أسفلها.
+            // يبدأ المسار مرفوعاً للأعلى ثم يهبط إلى موضعه النهائي، فيظهر الدوران من أعلى إلى أسفل.
+            grid[c].forEach((sym, r) => track.appendChild(this.symbolCell(sym, r)));
+            const fillerCount = this.turbo ? 8 : 14;
+            for (let i=0;i<fillerCount;i++) track.appendChild(this.symbolCell(this.weightedSymbol()));
+            reel.appendChild(track);
+
+            if (animate) {
+                const step = reel.clientWidth > 0 && window.innerWidth <= 640 ? 76 : 98;
+                track.style.transition = 'none';
+                track.style.transform = `translateY(${-fillerCount * step}px)`;
+                // إجبار المتصفح على تسجيل موضع البداية قبل الحركة
+                track.getBoundingClientRect();
+                const duration = (this.turbo ? 260 : 760) + c * (this.turbo ? 35 : 90);
+                track.style.transition = `transform ${duration}ms cubic-bezier(.16,.84,.25,1)`;
+                requestAnimationFrame(() => { track.style.transform = 'translateY(0)'; });
+            }
         });
+    }
+
+    finalCell(c, r) {
+        return document.querySelector(`#kgt-reels .kgt-reel:nth-child(${c+1}) .kgt-symbol[data-final-index="${r}"]`);
     }
 
     evaluate(grid) {
@@ -145,13 +176,13 @@ class GoldenTreeGame {
         this.message(isFree ? `جولة مجانية • المتبقي ${this.freeSpins}` : 'جاري تدوير البكرات…', '');
         const grid = this.makeGrid(!!opts.forceBonus);
         this.renderGrid(grid, true);
-        const delay = this.turbo ? 280 : 820;
+        const delay = this.turbo ? 480 : 1300;
         await new Promise(r=>setTimeout(r,delay));
         document.querySelectorAll('#kgt-reels .kgt-reel').forEach(r=>r.classList.remove('spinning'));
 
         const result = this.evaluate(grid);
-        result.treeCells.forEach(([c,r])=>document.querySelectorAll('#kgt-reels .kgt-reel')[c]?.children[r]?.classList.add('tree-hit'));
-        result.winningCells.forEach(key=>{ const [c,r]=key.split('-').map(Number); document.querySelectorAll('#kgt-reels .kgt-reel')[c]?.children[r]?.classList.add('win'); });
+        result.treeCells.forEach(([c,r])=>this.finalCell(c,r)?.classList.add('tree-hit'));
+        result.winningCells.forEach(key=>{ const [c,r]=key.split('-').map(Number); this.finalCell(c,r)?.classList.add('win'); });
 
         if (result.treeCount >= 3) {
             this.bonusMultiplier = result.treeCount >= 5 ? 5 : result.treeCount === 4 ? 3 : 2;
