@@ -114,11 +114,13 @@
     <!-- شريط Kazo الرئيسي الجديد -->
     <header class="kazo-topbar sticky top-0 z-40">
         <div class="kazo-topbar-inner">
-            <a href="#" class="kazo-brand" id="kazo-home-logo" aria-label="Kazo">
-                <span class="kazo-brand-mark">⚡</span>
-                <span class="kazo-brand-name" data-i18n="brandName">كازو</span>
-            </a>
-            <button id="open-main-drawer" class="kazo-menu-btn" type="button" title="القائمة" aria-label="القائمة">☰</button>
+            <div class="kazo-header-brand-group">
+                <button id="open-main-drawer" class="kazo-menu-btn" type="button" title="القائمة" aria-label="القائمة">☰</button>
+                <a href="#" class="kazo-brand" id="kazo-home-logo" aria-label="Kazo">
+                    <span class="kazo-brand-name" data-i18n="brandName">كازو</span>
+                    <span class="kazo-brand-mark">⚡</span>
+                </a>
+            </div>
 
             <button id="open-deposit-modal" class="kazo-wallet-capsule" type="button" aria-label="الرصيد والإيداع">
                 <span class="wallet-balance-display">1,000 د.ع</span>
@@ -126,7 +128,7 @@
             </button>
 
             <button id="open-bets-modal" class="kazo-header-icon" type="button" title="رهاناتي" aria-label="رهاناتي">📰</button>
-            <button id="open-profile-drawer" class="kazo-header-icon" type="button" title="الملف الشخصي" aria-label="الملف الشخصي">👤</button>
+            <button id="open-profile-drawer" class="kazo-header-icon kazo-header-avatar" type="button" title="الملف الشخصي" aria-label="الملف الشخصي"><img id="header-profile-photo" class="hidden" alt=""><span id="header-profile-fallback">🧑</span></button>
         </div>
     </header>
 
@@ -160,7 +162,7 @@
         <aside id="profile-drawer" class="kazo-profile-drawer">
             <div class="kazo-profile-head">
                 <button class="kazo-drawer-x" data-close-drawer="profile">✕</button>
-                <div class="kazo-profile-avatar">👤</div>
+                <div class="kazo-profile-avatar"><img id="drawer-profile-photo" class="hidden" alt=""><span id="drawer-profile-fallback">🧑</span></div>
                 <strong id="profile-drawer-name">Kazo</strong>
                 <span id="profile-drawer-id">ID ...</span>
             </div>
@@ -623,7 +625,7 @@
                 </div>
                 <label class="kazo-profile-photo-wrap" for="profile-photo-input" title="تغيير الصورة">
                     <img id="full-profile-photo" class="hidden" alt="صورة الحساب">
-                    <span id="full-profile-photo-fallback">👤</span>
+                    <span id="full-profile-photo-fallback">🧑</span>
                     <span class="kazo-photo-edit">＋</span>
                 </label>
                 <input id="profile-photo-input" type="file" accept="image/*" hidden>

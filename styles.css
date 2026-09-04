@@ -450,3 +450,22 @@ body{padding-bottom:82px;background:radial-gradient(circle at top,#0c2038 0,#071
 .kazo-profile-balance-card{margin-top:14px;padding:16px}.kazo-profile-balance-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid #24445f}.kazo-profile-balance-row span{color:#9db1c4;font-weight:700}.kazo-profile-balance-row strong{font-size:17px;color:#fff}.kazo-profile-balance-row.reward strong{color:var(--kazo-gold)}.kazo-profile-deposit-btn{margin:15px auto 0;min-width:150px;height:46px;border-radius:15px;background:linear-gradient(180deg,#f9ca57,#e8a91d);color:#171009;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:950;box-shadow:0 8px 22px rgba(246,185,59,.18)}.kazo-profile-deposit-btn span:first-child{font-size:21px}
 .kazo-profile-account-section{margin-top:14px;padding:16px}.kazo-profile-account-section h3{font-size:19px;font-weight:950;margin-bottom:8px}.kazo-profile-account-list{display:grid}.kazo-profile-account-list button{min-height:58px;display:grid;grid-template-columns:34px 1fr 24px;align-items:center;gap:9px;text-align:right;border-bottom:1px solid #24445f;color:#fff}.kazo-profile-account-list button:last-child{border-bottom:0}.kazo-profile-account-list button span:first-child{font-size:21px}.kazo-profile-account-list button span:nth-child(2){font-weight:800}.kazo-profile-account-list button b{color:#6e9ac1;font-size:25px}
 @media(max-width:640px){.kazo-profile-page{padding:10px 12px 88px}.kazo-profile-page-head{height:48px;margin-bottom:10px}.kazo-profile-page-head h2{font-size:20px}.kazo-profile-main-card{padding:12px 13px 18px}.kazo-profile-photo-wrap{width:88px;height:88px}.kazo-profile-photo-wrap>span:first-of-type{font-size:41px}.kazo-profile-display-name{font-size:18px}.kazo-profile-balance-card,.kazo-profile-account-section{padding:13px}.kazo-profile-account-list button{min-height:54px}}
+
+
+/* Combined update: fixed header order + synchronized circular profile photo */
+.kazo-header-brand-group{display:flex;align-items:center;gap:6px;direction:rtl;order:0;min-width:max-content}
+.kazo-header-brand-group .kazo-brand{direction:rtl}
+html[dir="ltr"] .kazo-topbar-inner{direction:rtl!important}
+html[dir="ltr"] .kazo-header-brand-group{direction:rtl!important}
+html[dir="ltr"] .kazo-header-brand-group .kazo-brand{direction:rtl!important}
+.kazo-header-avatar{overflow:hidden;padding:0!important;border-radius:14px}
+.kazo-header-avatar img,.kazo-profile-avatar img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.kazo-header-avatar img.hidden,.kazo-profile-avatar img.hidden{display:none!important}
+.kazo-header-avatar #header-profile-fallback,.kazo-profile-avatar #drawer-profile-fallback{width:100%;height:100%;display:grid;place-items:center}
+.kazo-header-avatar #header-profile-fallback.hidden,.kazo-profile-avatar #drawer-profile-fallback.hidden{display:none!important}
+.kazo-profile-avatar{overflow:hidden}
+.kazo-profile-photo-wrap{overflow:hidden}
+.kazo-profile-photo-wrap img{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border-radius:50%!important}
+.kazo-profile-photo-wrap #full-profile-photo-fallback{width:100%;height:100%;display:grid;place-items:center}
+.kazo-profile-photo-wrap #full-profile-photo-fallback.hidden{display:none!important}
+.kazo-photo-edit{z-index:2}

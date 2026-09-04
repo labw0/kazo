@@ -314,16 +314,32 @@ class App {
         const currentId = window.kazoCurrentProfile?.public_id;
         if (document.getElementById('profile-drawer-name')) document.getElementById('profile-drawer-name').textContent = currentName;
         if (document.getElementById('profile-drawer-id')) document.getElementById('profile-drawer-id').textContent = currentId ? `ID ${currentId}` : 'ID ...';
+        const initialPhotoKey = `kazo_${window.kazoCurrentUser?.id || 'guest'}_profile_photo`;
+        this.applyProfilePhoto(localStorage.getItem(initialPhotoKey));
 
         this.switchTab('home');
     }
 
     applyProfilePhoto(src) {
-        const img = document.getElementById('full-profile-photo');
-        const fallback = document.getElementById('full-profile-photo-fallback');
-        if (!img || !fallback) return;
-        if (src) { img.src = src; img.classList.remove('hidden'); fallback.classList.add('hidden'); }
-        else { img.removeAttribute('src'); img.classList.add('hidden'); fallback.classList.remove('hidden'); }
+        const pairs = [
+            ['full-profile-photo','full-profile-photo-fallback'],
+            ['header-profile-photo','header-profile-fallback'],
+            ['drawer-profile-photo','drawer-profile-fallback']
+        ];
+        pairs.forEach(([imgId, fallbackId]) => {
+            const img = document.getElementById(imgId);
+            const fallback = document.getElementById(fallbackId);
+            if (!img || !fallback) return;
+            if (src) {
+                img.src = src;
+                img.classList.remove('hidden');
+                fallback.classList.add('hidden');
+            } else {
+                img.removeAttribute('src');
+                img.classList.add('hidden');
+                fallback.classList.remove('hidden');
+            }
+        });
     }
 
     refreshFullProfile() {
