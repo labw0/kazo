@@ -137,6 +137,7 @@ class App {
     bindShellUI() {
         const dict = {
             ar: {
+                brandName:'كازو', profileTitle:'ملف التعريف', leave:'مغادرة', registeredAt:'تاريخ تسجيل الحساب', lastSession:'آخر جلسة للحساب', accountBalance:'رصيد الحساب', rewardBalance:'رصيد المكافأة', myAccount:'حسابي', wallet:'المحفظة', accountSettings:'إعدادات الحساب', copyId:'نسخ',
                 search:'البحث عن لعبة أو مباراة...', todayEvents:'أحداث اليوم', finals:'النهائيات', casino:'كازينو',
                 profile:'ملفي', deposit:'إيداع', withdraw:'سحب', bonus:'البونص', messages:'الرسائل', myBets:'رهاناتي',
                 accountHistory:'سجل الحساب', logout:'تسجيل خروج', exclusiveOffers:'عروض حصرية', waitingYou:'بانتظارك!',
@@ -147,6 +148,7 @@ class App {
                 depositSoonText:'سيتم إضافة وسائل الإيداع قريباً', soon:'قريباً', betDate:'تاريخ الرهان', betHistory:'سجل تاريخ الرهان'
             },
             en: {
+                brandName:'Kazo', profileTitle:'Profile', leave:'Leave', registeredAt:'Account registration date', lastSession:'Last account session', accountBalance:'Account balance', rewardBalance:'Reward balance', myAccount:'My Account', wallet:'Wallet', accountSettings:'Account Settings', copyId:'Copy',
                 search:'Search for a game or match...', todayEvents:"Today's Events", finals:'Finals', casino:'Casino',
                 profile:'My Profile', deposit:'Deposit', withdraw:'Withdraw', bonus:'Bonus', messages:'Messages', myBets:'My Bets',
                 accountHistory:'Account History', logout:'Log Out', exclusiveOffers:'Exclusive Offers', waitingYou:'Waiting for you!',
@@ -161,7 +163,7 @@ class App {
         const applyLanguage = (lang) => {
             localStorage.setItem('kazo_lang', lang);
             document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.dir = 'rtl'; // ثبات أماكن الهيدر والفوتر عند تغيير اللغة
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 if (dict[lang][key]) el.textContent = dict[lang][key];
@@ -169,6 +171,10 @@ class App {
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.dataset.i18nPlaceholder;
                 if (dict[lang][key]) el.placeholder = dict[lang][key];
+            });
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.dataset.i18nTitle;
+                if (dict[lang][key]) el.title = dict[lang][key];
             });
             document.querySelectorAll('.kazo-language-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
 
@@ -250,6 +256,44 @@ class App {
             this.showToast(lang === 'en' ? 'Coming soon' : 'قريباً', 'info');
         }));
 
+        // صفحة ملف التعريف الكاملة
+        const fullProfileModal = document.getElementById('full-profile-modal');
+        const openFullProfile = () => {
+            closeDrawer('profile');
+            this.refreshFullProfile();
+            fullProfileModal?.classList.remove('hidden');
+            document.body.style.overflow='hidden';
+        };
+        document.getElementById('open-full-profile')?.addEventListener('click', openFullProfile);
+        document.getElementById('close-full-profile')?.addEventListener('click', () => {
+            fullProfileModal?.classList.add('hidden');
+            document.body.style.overflow='';
+        });
+        document.getElementById('profile-info-btn')?.addEventListener('click', () => document.getElementById('profile-info-box')?.classList.toggle('hidden'));
+        document.getElementById('profile-copy-id')?.addEventListener('click', async () => {
+            const id = window.kazoCurrentProfile?.public_id || '';
+            if (!id) return this.showToast((localStorage.getItem('kazo_lang') || 'ar') === 'en' ? 'ID is not available' : 'الآيدي غير متوفر', 'info');
+            try { await navigator.clipboard.writeText(String(id)); }
+            catch { const t=document.createElement('textarea'); t.value=String(id); document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+            this.showToast((localStorage.getItem('kazo_lang') || 'ar') === 'en' ? 'ID copied' : 'تم نسخ الآيدي', 'success');
+        });
+        document.getElementById('profile-photo-input')?.addEventListener('change', (e) => {
+            const file = e.target.files?.[0]; if (!file) return;
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                const key = `kazo_${window.kazoCurrentUser?.id || 'guest'}_profile_photo`;
+                try { localStorage.setItem(key, reader.result); } catch {}
+                this.applyProfilePhoto(reader.result);
+            };
+            reader.readAsDataURL(file);
+        });
+        document.getElementById('profile-deposit-btn')?.addEventListener('click', () => {
+            fullProfileModal?.classList.add('hidden');
+            document.body.style.overflow='';
+            document.getElementById('deposit-modal')?.classList.remove('hidden');
+        });
+
         document.querySelectorAll('.kazo-home-search input').forEach(input => input.addEventListener('keydown', e => {
             if (e.key === 'Enter') this.showToast((localStorage.getItem('kazo_lang') || 'ar') === 'en' ? 'Search is coming soon' : 'البحث قريباً', 'info');
         }));
@@ -264,6 +308,7 @@ class App {
             const idEl = document.getElementById('profile-drawer-id');
             if (nameEl) nameEl.textContent = name;
             if (idEl) idEl.textContent = id ? `ID ${id}` : 'ID ...';
+            this.refreshFullProfile();
         }, { once:false });
         const currentName = window.kazoCurrentProfile?.name || window.kazoCurrentUser?.user_metadata?.name || 'Kazo';
         const currentId = window.kazoCurrentProfile?.public_id;
@@ -271,6 +316,36 @@ class App {
         if (document.getElementById('profile-drawer-id')) document.getElementById('profile-drawer-id').textContent = currentId ? `ID ${currentId}` : 'ID ...';
 
         this.switchTab('home');
+    }
+
+    applyProfilePhoto(src) {
+        const img = document.getElementById('full-profile-photo');
+        const fallback = document.getElementById('full-profile-photo-fallback');
+        if (!img || !fallback) return;
+        if (src) { img.src = src; img.classList.remove('hidden'); fallback.classList.add('hidden'); }
+        else { img.removeAttribute('src'); img.classList.add('hidden'); fallback.classList.remove('hidden'); }
+    }
+
+    refreshFullProfile() {
+        const user = window.kazoCurrentUser;
+        const profile = window.kazoCurrentProfile;
+        const name = profile?.name || user?.user_metadata?.name || 'Kazo';
+        const id = profile?.public_id;
+        const nameEl = document.getElementById('full-profile-name');
+        const idEl = document.getElementById('full-profile-id');
+        if (nameEl) nameEl.textContent = name;
+        if (idEl) idEl.textContent = id ? `ID ${id}` : 'ID ...';
+        const formatDate = (v) => {
+            if (!v) return '—';
+            try { return new Intl.DateTimeFormat((localStorage.getItem('kazo_lang') || 'ar') === 'en' ? 'en-GB' : 'ar-IQ', {dateStyle:'medium', timeStyle:'short'}).format(new Date(v)); }
+            catch { return String(v); }
+        };
+        const created = document.getElementById('profile-created-at');
+        const last = document.getElementById('profile-last-session');
+        if (created) created.textContent = formatDate(user?.created_at);
+        if (last) last.textContent = formatDate(user?.last_sign_in_at || user?.updated_at);
+        const key = `kazo_${user?.id || 'guest'}_profile_photo`;
+        this.applyProfilePhoto(localStorage.getItem(key));
     }
 
     bindSoundToggle() {
@@ -436,7 +511,7 @@ class App {
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                             مباشر ${m.minute} - ${m.league}
                         </span>
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">1xBet Live</span>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">Kazo Live</span>
                     </div>
 
                     <div class="flex items-center justify-between my-3">

@@ -116,8 +116,9 @@
         <div class="kazo-topbar-inner">
             <a href="#" class="kazo-brand" id="kazo-home-logo" aria-label="Kazo">
                 <span class="kazo-brand-mark">⚡</span>
-                <span class="kazo-brand-name">Kazo</span>
+                <span class="kazo-brand-name" data-i18n="brandName">كازو</span>
             </a>
+            <button id="open-main-drawer" class="kazo-menu-btn" type="button" title="القائمة" aria-label="القائمة">☰</button>
 
             <button id="open-deposit-modal" class="kazo-wallet-capsule" type="button" aria-label="الرصيد والإيداع">
                 <span class="wallet-balance-display">1,000 د.ع</span>
@@ -126,7 +127,6 @@
 
             <button id="open-bets-modal" class="kazo-header-icon" type="button" title="رهاناتي" aria-label="رهاناتي">📰</button>
             <button id="open-profile-drawer" class="kazo-header-icon" type="button" title="الملف الشخصي" aria-label="الملف الشخصي">👤</button>
-            <button id="open-main-drawer" class="kazo-menu-btn" type="button" title="القائمة" aria-label="القائمة">☰</button>
         </div>
     </header>
 
@@ -135,7 +135,7 @@
         <button class="kazo-drawer-dismiss" data-close-drawer="main" aria-label="إغلاق القائمة"></button>
         <aside id="main-drawer" class="kazo-main-drawer">
             <div class="kazo-drawer-head">
-                <div class="kazo-drawer-brand"><span>⚡</span><strong>Kazo</strong></div>
+                <div class="kazo-drawer-brand"><span>⚡</span><strong data-i18n="brandName">كازو</strong></div>
                 <button class="kazo-drawer-x" data-close-drawer="main">✕</button>
             </div>
             <div class="kazo-language-row">
@@ -165,7 +165,7 @@
                 <span id="profile-drawer-id">ID ...</span>
             </div>
             <div class="kazo-profile-links">
-                <button class="soon-action"><span>👤</span><span data-i18n="profile">ملفي</span></button>
+                <button id="open-full-profile"><span>👤</span><span data-i18n="profile">ملفي</span></button>
                 <button class="soon-action"><span>💳</span><span data-i18n="deposit">إيداع</span></button>
                 <button class="soon-action"><span>💸</span><span data-i18n="withdraw">سحب</span></button>
                 <button class="soon-action"><span>🎁</span><span data-i18n="bonus">البونص</span></button>
@@ -599,6 +599,52 @@
             <h3 data-i18n="depositBalance">إيداع رصيد</h3>
             <p data-i18n="depositSoonText">سيتم إضافة وسائل الإيداع قريباً</p>
             <div class="kazo-soon-pill" data-i18n="soon">قريباً</div>
+        </div>
+    </div>
+
+    <!-- ملف التعريف بكامل الشاشة -->
+    <div id="full-profile-modal" class="fixed inset-0 z-[90] bg-[#07111f] hidden overflow-y-auto">
+        <div class="kazo-profile-page">
+            <div class="kazo-profile-page-head">
+                <button id="close-full-profile" class="kazo-profile-leave" data-i18n="leave">مغادرة</button>
+                <h2 data-i18n="profileTitle">ملف التعريف</h2>
+                <span class="kazo-profile-head-spacer"></span>
+            </div>
+
+            <section class="kazo-profile-main-card">
+                <div class="kazo-profile-id-row">
+                    <button id="profile-copy-id" class="kazo-profile-mini-btn" type="button" data-i18n-title="copyId" title="نسخ">⧉</button>
+                    <strong id="full-profile-id">ID ...</strong>
+                    <button id="profile-info-btn" class="kazo-profile-mini-btn" type="button" aria-label="معلومات الحساب">?</button>
+                </div>
+                <div id="profile-info-box" class="kazo-profile-info-box hidden">
+                    <div><span data-i18n="registeredAt">تاريخ تسجيل الحساب</span><strong id="profile-created-at">—</strong></div>
+                    <div><span data-i18n="lastSession">آخر جلسة للحساب</span><strong id="profile-last-session">—</strong></div>
+                </div>
+                <label class="kazo-profile-photo-wrap" for="profile-photo-input" title="تغيير الصورة">
+                    <img id="full-profile-photo" class="hidden" alt="صورة الحساب">
+                    <span id="full-profile-photo-fallback">👤</span>
+                    <span class="kazo-photo-edit">＋</span>
+                </label>
+                <input id="profile-photo-input" type="file" accept="image/*" hidden>
+                <strong id="full-profile-name" class="kazo-profile-display-name">Kazo</strong>
+            </section>
+
+            <section class="kazo-profile-balance-card">
+                <div class="kazo-profile-balance-row"><span data-i18n="accountBalance">رصيد الحساب</span><strong class="wallet-balance-display">0 د.ع</strong></div>
+                <div class="kazo-profile-balance-row reward"><span data-i18n="rewardBalance">رصيد المكافأة</span><strong id="profile-reward-balance">0 د.ع</strong></div>
+                <button id="profile-deposit-btn" class="kazo-profile-deposit-btn" type="button"><span>＋</span><span data-i18n="deposit">إيداع</span></button>
+            </section>
+
+            <section class="kazo-profile-account-section">
+                <h3 data-i18n="myAccount">حسابي</h3>
+                <div class="kazo-profile-account-list">
+                    <button class="soon-action"><span>👛</span><span data-i18n="wallet">المحفظة</span><b>‹</b></button>
+                    <button class="soon-action"><span>⚙️</span><span data-i18n="accountSettings">إعدادات الحساب</span><b>‹</b></button>
+                    <button class="soon-action"><span>📜</span><span data-i18n="betHistory">تاريخ الرهان</span><b>‹</b></button>
+                    <button class="soon-action"><span>🎁</span><span data-i18n="bonus">البونص</span><b>‹</b></button>
+                </div>
+            </section>
         </div>
     </div>
 
