@@ -692,4 +692,19 @@ document.addEventListener('kazo:auth-ready', () => {
         t.textContent='اللعب برصيد مالي حقيقي غير متاح في هذه النسخة.'; document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
     });
 })();;
-\n\n// ===== Uncrossable Rush loading -> preview / demo =====\n(function(){\n const modal=document.getElementById('uncrossable-preview-modal'), loading=document.getElementById('uncrossable-loading');\n const progress=document.getElementById('rush-loading-progress'), percent=document.getElementById('rush-loading-percent');\n const openBtn=document.getElementById('open-uncrossable-preview'), demoBtn=document.getElementById('rush-play-demo'), realBtn=document.getElementById('rush-play-real');\n const frame=document.querySelector('#section-uncrossable iframe'); let timer=null;\n const closeModal=()=>{modal?.classList.add('hidden');modal?.setAttribute('aria-hidden','true')};\n const openModal=()=>{modal?.classList.remove('hidden');modal?.setAttribute('aria-hidden','false')};\n const closeLoading=()=>{loading?.classList.add('hidden');loading?.setAttribute('aria-hidden','true')};\n openBtn?.addEventListener('click',()=>{closeModal();loading?.classList.remove('hidden');let v=0;progress.style.width='0%';percent.textContent='0%';clearInterval(timer);timer=setInterval(()=>{v=Math.min(100,v+4);progress.style.width=v+'%';percent.textContent=v+'%';if(v>=100){clearInterval(timer);setTimeout(()=>{closeLoading();openModal()},250)}},70)});\n document.querySelectorAll('[data-close-rush-preview]').forEach(x=>x.addEventListener('click',closeModal));\n demoBtn?.addEventListener('click',()=>{closeModal();if(frame)frame.src='games/uncrossable-rush/index.html?mode=demo&v=20260904';document.querySelectorAll('main > section').forEach(x=>x.classList.add('hidden'));document.getElementById('section-uncrossable')?.classList.remove('hidden')});\n realBtn?.addEventListener('click',()=>{const t=document.createElement('div');t.className='kgt-preview-toast';t.textContent='قريبًا';document.body.appendChild(t);setTimeout(()=>t.remove(),2200)});\n})();\n
+
+
+// ===== Uncrossable Rush loading -> preview / demo =====
+(function(){
+ const modal=document.getElementById('uncrossable-preview-modal'), loading=document.getElementById('uncrossable-loading');
+ const progress=document.getElementById('rush-loading-progress'), percent=document.getElementById('rush-loading-percent');
+ const openBtn=document.getElementById('open-uncrossable-preview'), demoBtn=document.getElementById('rush-play-demo'), realBtn=document.getElementById('rush-play-real');
+ const frame=document.querySelector('#section-uncrossable iframe'); let timer=null;
+ const closeModal=()=>{modal?.classList.add('hidden');modal?.setAttribute('aria-hidden','true')};
+ const openModal=()=>{modal?.classList.remove('hidden');modal?.setAttribute('aria-hidden','false')};
+ const closeLoading=()=>{loading?.classList.add('hidden');loading?.setAttribute('aria-hidden','true')};
+ openBtn?.addEventListener('click',()=>{closeModal();loading?.classList.remove('hidden');let v=0;progress.style.width='0%';percent.textContent='0%';clearInterval(timer);timer=setInterval(()=>{v=Math.min(100,v+4);progress.style.width=v+'%';percent.textContent=v+'%';if(v>=100){clearInterval(timer);setTimeout(()=>{closeLoading();openModal()},250)}},70)});
+ document.querySelectorAll('[data-close-rush-preview]').forEach(x=>x.addEventListener('click',closeModal));
+ demoBtn?.addEventListener('click',()=>{closeModal();if(frame)frame.src='games/uncrossable-rush/index.html?mode=demo&v=20260904';document.querySelectorAll('main > section').forEach(x=>x.classList.add('hidden'));document.getElementById('section-uncrossable')?.classList.remove('hidden')});
+ realBtn?.addEventListener('click',()=>{const t=document.createElement('div');t.className='kgt-preview-toast';t.textContent='قريبًا';document.body.appendChild(t);setTimeout(()=>t.remove(),2200)});
+})();
