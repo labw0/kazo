@@ -184,7 +184,6 @@
         const btn = $('forgot-submit');
         setBusy(btn, true, 'جاري الإرسال...');
         try {
-            // رابط الإنتاج ثابت حتى لا يتم إرسال المستخدم إلى localhost عند فتح رسالة الاستعادة.
             const redirectTo = 'https://labw0.github.io/kazo/';
             const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
             if (error) throw error;
@@ -252,22 +251,9 @@
             }
         });
 
-        // لا نفتح التطبيق مباشرة إذا كان الرابط خاصًا باستعادة كلمة المرور.
-        // Supabase قد يضع type=recovery في الـ hash، أو code في query حسب نوع التدفق.
-        const isRecoveryUrl =
-            location.hash.includes('type=recovery') ||
-            new URLSearchParams(location.search).has('code');
-
         const { data } = await sb.auth.getSession();
-        if (isRecoveryUrl) {
-            document.body.classList.add('auth-locked');
-            $('auth-gate')?.classList.remove('hidden');
-            showPanel('recovery');
-        } else if (data.session) {
-            await unlock(data.session);
-        } else {
-            showPanel('login');
-        }
+        if (data.session) await unlock(data.session);
+        else showPanel('login');
     }
 
     document.addEventListener('DOMContentLoaded', init);
