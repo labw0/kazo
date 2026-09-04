@@ -5,35 +5,7 @@
 
 // تعريف متجهات الرموز بدقة عالية (SVG Definitions)
 const SYMBOLS_SVG = {
-    tree: `
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <radialGradient id="treeGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#fff8b5" />
-                    <stop offset="50%" stop-color="#ffd700" />
-                    <stop offset="100%" stop-color="#b8860b" />
-                </radialGradient>
-                <filter id="goldShine">
-                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                    <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-            </defs>
-            <!-- الجذع والفروع -->
-            <path d="M50,92 C45,75 42,60 48,45 C40,40 32,48 24,42 C20,38 28,34 35,36 C42,38 46,42 50,42 C54,42 58,38 65,36 C72,34 80,38 76,42 C68,48 60,40 52,45 C58,60 55,75 50,92 Z" fill="url(#treeGlow)" filter="url(#goldShine)"/>
-            <!-- التاج وأوراق الشجرة الذهبية -->
-            <circle cx="50" cy="28" r="18" fill="url(#treeGlow)" opacity="0.9" />
-            <circle cx="34" cy="34" r="14" fill="url(#treeGlow)" opacity="0.85" />
-            <circle cx="66" cy="34" r="14" fill="url(#treeGlow)" opacity="0.85" />
-            <circle cx="25" cy="45" r="10" fill="url(#treeGlow)" opacity="0.8" />
-            <circle cx="75" cy="45" r="10" fill="url(#treeGlow)" opacity="0.8" />
-            <circle cx="50" cy="18" r="12" fill="#fff" opacity="0.6" />
-            <!-- لآلئ الزمرد المتدلية -->
-            <circle cx="40" cy="45" r="3.5" fill="#00ff88" filter="url(#goldShine)" />
-            <circle cx="60" cy="45" r="3.5" fill="#00ff88" filter="url(#goldShine)" />
-            <circle cx="50" cy="32" r="4" fill="#00ff88" filter="url(#goldShine)" />
-            <text x="50" y="98" font-family="'Cinzel', serif" font-weight="900" font-size="9" fill="#ffd700" text-anchor="middle">WILD</text>
-        </svg>
-    `,
+    tree: `<img src="tree-approved.png" alt="WILD" class="approved-tree-symbol">`,
     seven: `
         <svg viewBox="0 0 100 100">
             <defs>

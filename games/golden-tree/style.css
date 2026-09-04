@@ -779,3 +779,9 @@ body {
         height: 65px;
     }
 }
+
+/* Approved Golden Tree artwork */
+.approved-tree-symbol { width: 100%; height: 100%; object-fit: contain; display:block; }
+.logo-icon img { width: 64px; height: 64px; object-fit: contain; border-radius: 12px; display:block; }
+.feature-icon img { width: 72px; height: 72px; object-fit: contain; border-radius: 12px; display:block; }
+.symbol-cell.expanding-wild-symbol .approved-tree-symbol { width:100%; height:100%; object-fit:contain; }
